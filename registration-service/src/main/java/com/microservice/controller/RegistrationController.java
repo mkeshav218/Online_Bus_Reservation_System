@@ -38,6 +38,12 @@ public class RegistrationController {
 	public ResponseEntity fallbackRegistration() {
 		return new ResponseEntity("Handled By Hystrix",HttpStatus.OK);
 	}
+	
+	@GetMapping("/fault")
+	@HystrixCommand(fallbackMethod = "fallbackRegistration")
+	public ResponseEntity getRegisteredUser(){
+		throw new RuntimeException();
+	}
 
 	
 	@PostMapping("/getRegisteredUser")
