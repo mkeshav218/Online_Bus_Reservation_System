@@ -72,6 +72,19 @@ public class RegistrationController {
 		}
 	}
 	
+	@PostMapping("/login")
+	public ResponseEntity<String> login(@RequestBody Login loginDto){
+		try {
+			boolean res = service.isRegistered(loginDto.getUserName(), loginDto.getPassword());
+			if(res) {
+				return new ResponseEntity<String>("Login Successful", HttpStatus.OK);
+			}
+		}catch (Exception e) {
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		return null;
+	}
+	
 	@GetMapping("/getbalance")
 	public ResponseEntity<Double> getWalletAmount(@RequestBody Login login) {
 		try {
