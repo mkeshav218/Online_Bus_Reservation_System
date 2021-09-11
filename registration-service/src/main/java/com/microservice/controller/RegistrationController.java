@@ -35,19 +35,19 @@ public class RegistrationController {
 	RegistrationService service;
 
 	
-	public ResponseEntity fallbackRegistration() {
-		return new ResponseEntity("Handled By Hystrix",HttpStatus.OK);
-	}
+//	public ResponseEntity fallbackRegistration() {
+//		return new ResponseEntity("Handled By Hystrix",HttpStatus.OK);
+//	}
 	
-	@GetMapping("/fault")
-	@HystrixCommand(fallbackMethod = "fallbackRegistration")
-	public ResponseEntity getRegisteredUser(){
-		throw new RuntimeException();
-	}
+//	@GetMapping("/fault")
+//	@HystrixCommand(fallbackMethod = "fallbackRegistration")
+//	public ResponseEntity getRegisteredUser(){
+//		throw new RuntimeException();
+//	}
 
 	
 	@PostMapping("/getRegisteredUser")
-	@HystrixCommand(fallbackMethod = "fallbackRegistration")
+//	@HystrixCommand(fallbackMethod = "fallbackRegistration")
 	public ResponseEntity<Registration> getRegisteredUser(@RequestBody Login login){
 		try {
 			Registration registration = service.userRegistrationDetails(login.getUserName(),login.getPassword());
@@ -148,7 +148,7 @@ public class RegistrationController {
 	@PostMapping("/update/phone")
 	public ResponseEntity<String> updateUserPhone(@RequestBody UserPhone userPhone) {
 		try {
-			service.updateUserDetails(userPhone.getUserName(), userPhone.getPassword(),userPhone.getPhone());
+			service.updateUserPhone(userPhone.getUserName(), userPhone.getPassword(),userPhone.getPhone());
 			return new ResponseEntity<String>("Phone number updated successfully", HttpStatus.OK);
 		}catch (Exception e) {
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);

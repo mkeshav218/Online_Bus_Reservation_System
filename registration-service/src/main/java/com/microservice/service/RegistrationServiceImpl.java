@@ -98,7 +98,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 	public void updateUserPhone(String email,String password, String phone) {
 		try {
 			repo.userRegistrationDetails(email);
-			repo.updateUserDetails(email, phone);
+			repo.updateUserPhone(email, phone);
 		}catch (Exception e) {
 			throw new BusServiceException("Cannot update PhoneNo...Error Occured!!");
 		}
