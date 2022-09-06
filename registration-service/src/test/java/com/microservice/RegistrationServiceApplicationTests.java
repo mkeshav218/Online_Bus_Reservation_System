@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 
 import com.microservice.controller.RegistrationController;
-import com.microservice.dto.Deposit;
+import com.microservice.dto.UpdateWallet;
 import com.microservice.dto.Login;
 import com.microservice.dto.UserGender;
 import com.microservice.entity.Registration;
@@ -41,7 +41,7 @@ class RegistrationServiceApplicationTests {
 	void test2() {  //get Wallet amount
 		test1();
 		Login login = new Login();
-		login.setUserName("mkeshav218@gmail.com");
+		login.setEmail("mkeshav218@gmail.com");
 		login.setPassword("12345678");
 		ResponseEntity<Double> res = controller.getWalletAmount(login);
 		System.out.println("----------------------Test2 Result----------------------");
@@ -52,8 +52,8 @@ class RegistrationServiceApplicationTests {
 	@Test
 	void test3() {
 		test2();
-		Deposit deposit = new Deposit();
-		deposit.setUserName("mkeshav218@gmail.com");
+		UpdateWallet deposit = new UpdateWallet();
+		deposit.setEmail("mkeshav218@gmail.com");
 		deposit.setPassword("12345678");
 		deposit.setAmount(500);
 		ResponseEntity<String> res = controller.depositMoney(deposit);
@@ -65,8 +65,8 @@ class RegistrationServiceApplicationTests {
 	@Test
 	void test4() {
 		test3();
-		Deposit deposit = new Deposit();
-		deposit.setUserName("mkeshav218@gmail.com");
+		UpdateWallet deposit = new UpdateWallet();
+		deposit.setEmail("mkeshav218@gmail.com");
 		deposit.setPassword("12345678");
 		deposit.setAmount(200);
 		ResponseEntity<String> res = controller.withdrawMoney(deposit);
@@ -79,10 +79,10 @@ class RegistrationServiceApplicationTests {
 	void test5() {
 		test4();
 		UserGender userGender = new UserGender();
-		userGender.setUserName("mkeshav218@gmail.com");
+		userGender.setEmail("mkeshav218@gmail.com");
 		userGender.setPassword("12345678");
 		userGender.setGender("Male");
-		ResponseEntity<String> res = controller.updateUserGender(userGender);
+		ResponseEntity<Registration> res = controller.updateUserGender(userGender);
 		System.out.println("----------------------Test5 Result----------------------");
 		System.out.println(res.getBody());
 		System.out.println(res.getStatusCode());

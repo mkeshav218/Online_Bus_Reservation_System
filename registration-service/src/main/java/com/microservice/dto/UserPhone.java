@@ -1,7 +1,7 @@
 package com.microservice.dto;
 
 public class UserPhone {
-	String userName;
+	String email;
 	String password;
 	String phone;
 	
@@ -9,12 +9,12 @@ public class UserPhone {
 		super();
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getPassword() {

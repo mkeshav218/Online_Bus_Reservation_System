@@ -2,18 +2,20 @@ package com.microservice.dto;
 
 
 public class Login {
-	String userName;
+	String email;
 	String password;
 	
 	public Login() {
 		super();
 	}
-	public String getUserName() {
-		return userName;
+	public String getEmail() {
+		return email;
 	}
-	public void setUserName(String userName) {
-		this.userName = userName;
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
+
 	public String getPassword() {
 		return password;
 	}

@@ -1,20 +1,20 @@
 package com.microservice.dto;
 
 public class UpdateBookedTicket {
-	String userName;
+	String email;
 	String password;
 	int noOfTicket;
 	
 	public UpdateBookedTicket() {
 		super();
 	}
-
-	public String getUserName() {
-		return userName;
+	
+	public String getEmail() {
+		return email;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getPassword() {

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.microservice.dto.DefaultPassword;
-import com.microservice.dto.Deposit;
+import com.microservice.dto.UpdateWallet;
 import com.microservice.dto.Login;
 import com.microservice.dto.UpdateBookedTicket;
 import com.microservice.dto.UpdatePassword;
@@ -22,7 +22,6 @@ import com.microservice.dto.UserGender;
 import com.microservice.dto.UserPhone;
 import com.microservice.entity.Registration;
 import com.microservice.service.RegistrationService;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 @RestController
 @CrossOrigin
@@ -34,6 +33,135 @@ public class RegistrationController {
 	@Autowired
 	RegistrationService service;
 
+	@PostMapping("/addregistration")
+	public ResponseEntity<String> addRegistration(@RequestBody Registration newRegister) {
+		try{
+			service.addRegistration(newRegister);
+			return new ResponseEntity<String>("Registration Successful", HttpStatus.OK);
+		}catch(Exception e) {
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.CONFLICT);
+		}
+	}
+	
+	@GetMapping("/getRegisteredUser")
+	public ResponseEntity<Registration> getRegisteredUser(@RequestBody Login login){
+		try {
+			Registration registration = service.userRegistrationDetails(login.getEmail(),login.getPassword());
+			return new ResponseEntity<Registration>(registration, HttpStatus.OK);
+		}catch (Exception e) {
+			return new ResponseEntity(e.getMessage(), HttpStatus.UNAUTHORIZED);
+		}
+	}
+	
+	@PostMapping("/login")
+	public ResponseEntity<Registration> login(@RequestBody Login loginDto){
+		try {
+			Registration registeredUser = service.isRegistered(loginDto.getEmail(), loginDto.getPassword());
+			return new ResponseEntity<Registration>(registeredUser, HttpStatus.OK);
+		}catch (Exception e) {
+			return new ResponseEntity(e.getMessage(), HttpStatus.UNAUTHORIZED);
+		}
+	}
+	
+	@GetMapping("/getbalance")
+	public ResponseEntity<Double> getWalletAmount(@RequestBody Login login) {
+		try {
+			double amount = service.getWalletAmount(login.getEmail(), login.getPassword());
+			return new ResponseEntity<Double>(amount, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity(e.getMessage(), HttpStatus.UNAUTHORIZED);
+		}
+	}
+	
+	@PostMapping("/addtowallet")
+	public ResponseEntity<String> depositMoney(@RequestBody UpdateWallet deposit) {
+		try {
+			double updatedAmount = service.depositMoney(deposit.getEmail(),deposit.getPassword(),deposit.getAmount());
+			return new ResponseEntity<String>(deposit.getAmount() + " added to wallet, Updated amount : " + updatedAmount, HttpStatus.OK);
+		}catch(Exception e) {
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+		}
+	}
+	
+	@PostMapping("/withdraw")
+	public ResponseEntity<String> withdrawMoney(@RequestBody UpdateWallet deposit) {
+		try {
+			service.withdrawMoney(deposit.getEmail(),deposit.getPassword(),deposit.getAmount());
+			return new ResponseEntity<String>("Success", HttpStatus.OK);
+		}catch(Exception e) {
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+		}
+	}
+	
+	@PostMapping("/update/dob")
+	public ResponseEntity<Registration> updateUserDob(@RequestBody UserDob userDob) {
+		try {
+			Registration registeredUser = service.updateUserDetails(userDob.getEmail(), userDob.getPassword(), userDob.getDob());
+			return new ResponseEntity<Registration>(registeredUser, HttpStatus.OK);
+		}catch (Exception e) {
+			return new ResponseEntity(e.getMessage(), HttpStatus.UNAUTHORIZED);
+		}
+	}
+	
+	@PostMapping("/update/gender")
+	public ResponseEntity<Registration> updateUserGender(@RequestBody UserGender userGender) {
+		try {
+			Registration registeredUser = service.updateUserDetails(userGender.getEmail(), userGender.getPassword(), userGender.getGender());
+			return new ResponseEntity<Registration>(registeredUser, HttpStatus.OK);
+		}catch (Exception e) {
+			return new ResponseEntity(e.getMessage(), HttpStatus.UNAUTHORIZED);
+		}
+	}
+	
+	@PostMapping("/update/dob/gender")
+	public ResponseEntity<Registration> updateUser(@RequestBody UserDetails userDetails) {
+		try {
+			Registration registeredUser = service.updateUserDetails(userDetails.getEmail(), userDetails.getPassword(),userDetails.getDob(), userDetails.getGender());
+			return new ResponseEntity<Registration>(registeredUser, HttpStatus.OK);
+		}catch (Exception e) {
+			return new ResponseEntity(e.getMessage(), HttpStatus.UNAUTHORIZED);
+		}
+	}
+	
+	@PostMapping("/update/phone")
+	public ResponseEntity<Registration> updateUserPhone(@RequestBody UserPhone userPhone) {
+		try {
+			Registration registeredUser = service.updateUserPhone(userPhone.getEmail(), userPhone.getPassword(),userPhone.getPhone());
+			return new ResponseEntity<Registration>(registeredUser, HttpStatus.OK);
+		}catch (Exception e) {
+			return new ResponseEntity(e.getMessage(), HttpStatus.UNAUTHORIZED);
+		}
+	}
+	
+	@PostMapping("/update/resetpassword")
+	public ResponseEntity<Registration> setDefaultPassword(@RequestBody DefaultPassword defaultPassword) {
+		try {
+			Registration registeredUser = service.setDefaultPassword(defaultPassword.getEmail(),defaultPassword.getPhone());
+			return new ResponseEntity<Registration>(registeredUser, HttpStatus.OK);
+		}catch (Exception e) {
+			return new ResponseEntity(e.getMessage(), HttpStatus.UNAUTHORIZED);
+		}
+	}
+	
+	@PostMapping("/update/password")
+	public ResponseEntity<Registration> setPassword(@RequestBody UpdatePassword updatePassword) {
+		try {
+			Registration registeredUser = service.updatePassword(updatePassword.getEmail(),updatePassword.getOldPassword(),updatePassword.getNewPassword());
+			return new ResponseEntity<Registration>(registeredUser, HttpStatus.OK);
+		}catch (Exception e) {
+			return new ResponseEntity(e.getMessage(), HttpStatus.UNAUTHORIZED);
+		}
+	}
+	
+	@PostMapping("/update/ticketcount")
+	public ResponseEntity<Registration> updateBookedTicket(@RequestBody UpdateBookedTicket updateBookedTicket){
+		try {
+			Registration registeredUser = service.updateBookedTicket(updateBookedTicket.getEmail(), updateBookedTicket.getPassword(), updateBookedTicket.getNoOfTicket());
+			return new ResponseEntity<Registration>(registeredUser, HttpStatus.OK);
+		}catch (Exception e) {
+			return new ResponseEntity(e.getMessage(), HttpStatus.UNAUTHORIZED);
+		}
+	}
 	
 //	public ResponseEntity fallbackRegistration() {
 //		return new ResponseEntity("Handled By Hystrix",HttpStatus.OK);
@@ -44,145 +172,5 @@ public class RegistrationController {
 //	public ResponseEntity getRegisteredUser(){
 //		throw new RuntimeException();
 //	}
-
-	
-	@PostMapping("/getRegisteredUser")
-//	@HystrixCommand(fallbackMethod = "fallbackRegistration")
-	public ResponseEntity<Registration> getRegisteredUser(@RequestBody Login login){
-		try {
-			Registration registration = service.userRegistrationDetails(login.getUserName(),login.getPassword());
-			return new ResponseEntity<Registration>(registration, HttpStatus.OK);
-		}catch (Exception e) {
-			return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
-		}
-	}
-	
-	@PostMapping("/addregistration")
-	public ResponseEntity<String> addRegistration(@RequestBody Registration newRegister) {
-		try{
-			int res = service.addRegistration(newRegister);
-			if(res == 1) {
-				logger.info("{}", newRegister);  
-				return new ResponseEntity<String>("Registration Successful", HttpStatus.OK);
-			}else {
-				return new ResponseEntity<String>("User already exist", HttpStatus.UNPROCESSABLE_ENTITY);
-			}
-		}catch(Exception e) {
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
-		}
-	}
-	
-	@PostMapping("/login")
-	public ResponseEntity<String> login(@RequestBody Login loginDto){
-		try {
-			boolean res = service.isRegistered(loginDto.getUserName(), loginDto.getPassword());
-			if(res) {
-				return new ResponseEntity<String>("Login Successful", HttpStatus.OK);
-			}
-		}catch (Exception e) {
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
-		}
-		return null;
-	}
-	
-	@GetMapping("/getbalance")
-	public ResponseEntity<Double> getWalletAmount(@RequestBody Login login) {
-		try {
-			double amount = service.getWalletAmount(login.getUserName(), login.getPassword());
-			return new ResponseEntity<Double>(amount, HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
-		}
-	}
-	
-	@PostMapping("/add")
-	public ResponseEntity<String> depositMoney(@RequestBody Deposit deposit) {
-		try {
-			service.depositMoney(deposit.getUserName(),deposit.getPassword(),deposit.getAmount());
-			return new ResponseEntity<String>("Success", HttpStatus.OK);
-		}catch(Exception e) {
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
-		}
-	}
-	
-	@PostMapping("/withdraw")
-	public ResponseEntity<String> withdrawMoney(@RequestBody Deposit deposit) {
-		try {
-			service.withdrawMoney(deposit.getUserName(),deposit.getPassword(),deposit.getAmount());
-			return new ResponseEntity<String>("Success", HttpStatus.OK);
-		}catch(Exception e) {
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
-		}
-	}
-	
-	@PostMapping("/update/dob")
-	public ResponseEntity<String> updateUserDob(@RequestBody UserDob userDob) {
-		try {
-			service.updateUserDetails(userDob.getUserName(), userDob.getPassword(), userDob.getDob());
-			return new ResponseEntity<String>("Date-of-Bith updated successfully", HttpStatus.OK);
-		}catch (Exception e) {
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
-		}
-	}
-	
-	@PostMapping("/update/gender")
-	public ResponseEntity<String> updateUserGender(@RequestBody UserGender userGender) {
-		try {
-			service.updateUserDetails(userGender.getUserName(), userGender.getPassword(), userGender.getGender());
-			return new ResponseEntity<String>("Gender updated successfully", HttpStatus.OK);
-		}catch (Exception e) {
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
-		}
-	}
-	
-	@PostMapping("/update/dob/gender")
-	public ResponseEntity<String> updateUser(@RequestBody UserDetails userDetails) {
-		try {
-			service.updateUserDetails(userDetails.getUserName(), userDetails.getPassword(),userDetails.getDob(), userDetails.getGender());
-			return new ResponseEntity<String>("Date-of-Bith & Gender updated successfully", HttpStatus.OK);
-		}catch (Exception e) {
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
-		}
-	}
-	
-	@PostMapping("/update/phone")
-	public ResponseEntity<String> updateUserPhone(@RequestBody UserPhone userPhone) {
-		try {
-			service.updateUserPhone(userPhone.getUserName(), userPhone.getPassword(),userPhone.getPhone());
-			return new ResponseEntity<String>("Phone number updated successfully", HttpStatus.OK);
-		}catch (Exception e) {
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
-		}
-	}
-	
-	@PostMapping("/update/defaultpassword")
-	public ResponseEntity<String> setDefaultPassword(@RequestBody DefaultPassword defaultPassword) {
-		try {
-			String curPassword = service.setDefaultPassword(defaultPassword.getUserName(),defaultPassword.getPhone());
-			return new ResponseEntity<String>("Default password set successfully, Your password is : " + curPassword, HttpStatus.OK);
-		}catch (Exception e) {
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
-		}
-	}
-	
-	@PostMapping("/update/password")
-	public ResponseEntity<String> setPassword(@RequestBody UpdatePassword updatePassword) {
-		try {
-			service.updatePassword(updatePassword.getUserName(),updatePassword.getOldPassword(),updatePassword.getNewPassword());
-			return new ResponseEntity<String>("Password updated successfully", HttpStatus.OK);
-		}catch (Exception e) {
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
-		}
-	}
-	
-	@PostMapping("/update/ticketcount")
-	public ResponseEntity<String> updateBookedTicket(@RequestBody UpdateBookedTicket updateBookedTicket){
-		try {
-			service.updateBookedTicket(updateBookedTicket.getUserName(), updateBookedTicket.getPassword(), updateBookedTicket.getNoOfTicket());
-			return new ResponseEntity<String>("Ticket count updated successfully", HttpStatus.OK);
-		}catch (Exception e) {
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
-		}
-	}
 
 }

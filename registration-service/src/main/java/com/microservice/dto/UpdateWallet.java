@@ -1,17 +1,18 @@
 package com.microservice.dto;
 
-public class Deposit {
-	String userName;
+public class UpdateWallet {
+	String email;
 	String password;
 	double amount;
-	public Deposit() {
+	public UpdateWallet() {
 		super();
 	}
-	public String getUserName() {
-		return userName;
+
+	public String getEmail() {
+		return email;
 	}
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getPassword() {

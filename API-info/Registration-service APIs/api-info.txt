@@ -1,0 +1,116 @@
+API-Details :-
+
+1)User Registration
+	API Type :- POST
+	URL :- http://localhost:8765/registration-service/addregistration
+	Input JSON:- {
+    			"email":"a@gmail.com",
+    			"firstName":"a",
+    			"lastName":"b",
+    			"password":"password"
+		     }
+
+2) Get User Information
+	API Type :- GET
+	URL :- http://localhost:8765/registration-service/getRegisteredUser
+	Input JSON:- {
+    			"email":"a@gmail.com",
+    			"password":"password"
+		     }	
+		     
+3) Login
+	API Type :- POST
+	URL :- http://localhost:8765/registration-service/login
+	Input JSON:- {
+    			"email":"a@gmail.com",
+    			"password":"password"
+		     }	
+
+4) Fetch Wallet Amount
+	API Type :- GET
+	URL :- http://localhost:8765/registration-service/getbalance
+	Input JSON:- {
+    			"email":"a@gmail.com",
+    			"password":"password"
+		     }	
+
+5) Add money to Wallet
+	API Type :- POST
+	URL :- http://localhost:8765/registration-service/addtowallet
+	Input JSON:- {
+    			"email":"a@gmail.com",
+    			"password":"password",
+    			"amount":100
+		     }	
+
+6) Withdraw money from Wallet
+	API Type :- POST
+	URL :- http://localhost:8765/registration-service/withdraw
+	Input JSON:- {
+    			"email":"a@gmail.com",
+    			"password":"password",
+    			"amount":100
+		     }	
+		     
+7) Update Date-of-Birth
+	API Type :- POST
+	URL :- http://localhost:8765/registration-service/update/dob
+	Input JSON:- {
+    			"email":"a@gmail.com",
+    			"password":"password",
+    			"dob":"2022-01-01"
+		     }		
+		     
+8) Update Gender
+	API Type :- POST
+	URL :- http://localhost:8765/registration-service/update/gender
+	Input JSON:- {
+    			"email":"a@gmail.com",
+    			"password":"password",
+    			"gender":"Male"
+		     }		
+		     
+9) Update Date-of-Birth & Gender
+	API Type :- POST
+	URL :- http://localhost:8765/registration-service/update/dob/gender
+	Input JSON:- {
+    			"email":"a@gmail.com",
+    			"password":"password",
+    			"dob":"2022-01-01",
+    			"gender":"Male"
+		     }	
+		     
+10) Update Phone number
+	API Type :- POST
+	URL :- http://localhost:8765/registration-service/update/phone
+	Input JSON:- {
+    			"email":"a@gmail.com",
+    			"password":"password",
+    			"phone":"9876543210"
+		     }			     		     
+     	    
+11) Reset Password
+	API Type :- POST
+	URL :- http://localhost:8765/registration-service/update/resetpassword
+	Input JSON:- {
+    			"email":"a@gmail.com",
+    			"phone":"9876543210"
+		     }	
+		     
+12) Update Password
+	API Type :- POST
+	URL :- http://localhost:8765/registration-service/update/password
+	Input JSON:- {
+    			"email":"a@gmail.com",
+    			"oldPassword":"password",
+    			"newPassword":"NewPassword"
+		     }
+		     
+13) Update Total Number of ticket
+	API Type :- POST
+	URL :- http://localhost:8765/registration-service/update/ticketcount
+	Input JSON:- {
+    			"email":"a@gmail.com",
+    			"password":"password",
+    			"noOfTicket":"5"
+		     }

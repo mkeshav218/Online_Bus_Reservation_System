@@ -6,7 +6,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 import org.springframework.context.annotation.Bean;
 
-import brave.sampler.Sampler;
+//import brave.sampler.Sampler;
 
 @SpringBootApplication
 @EnableDiscoveryClient
@@ -17,8 +17,8 @@ public class RegistrationServiceApplication {
 		SpringApplication.run(RegistrationServiceApplication.class, args);
 	}
 	
-	@Bean
-	public Sampler defaultSampler() {
-		return Sampler.ALWAYS_SAMPLE;
-	}
+//	@Bean
+//	public Sampler defaultSampler() {
+//		return Sampler.ALWAYS_SAMPLE;
+//	}
 }

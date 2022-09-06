@@ -33,54 +33,54 @@ public class RegistrationRepoImpl implements RegistrationRepo {
 	}
 
 	@Override
-	public void updateWallet(String email, double amount) {
+	public double updateWallet(String email, double amount) {
 		registration = userRegistrationDetails(email);
 		registration.setWallet(amount);
 		entityManager.merge(registration);
+		return amount;
 	}
 
 	@Override
-	public void updateUserDetails(String email, LocalDate dob) {
+	public Registration updateUserDetails(String email, LocalDate dob) {
 		registration = userRegistrationDetails(email);
 		registration.setDateOfBirth(dob);
-		entityManager.merge(registration);
+		return entityManager.merge(registration);
 	}
 
 	@Override
-	public void updateUserDetails(String email, String gender) {
+	public Registration updateUserDetails(String email, String gender) {
 		registration = userRegistrationDetails(email);
 		registration.setGender(gender);
-		entityManager.merge(registration);
+		return entityManager.merge(registration);
 	}
 
 	@Override
-	public void updateUserDetails(String email, LocalDate dob, String gender) {
+	public Registration updateUserDetails(String email, LocalDate dob, String gender) {
 		registration = userRegistrationDetails(email);
 		registration.setDateOfBirth(dob);
 		registration.setGender(gender);
-		entityManager.merge(registration);
+		return entityManager.merge(registration);
 	}
 
 	@Override
-	public void updateUserPhone(String email, String phone) {
+	public Registration updateUserPhone(String email, String phone) {
 		registration = userRegistrationDetails(email);
 		registration.setPhone(phone);
-		entityManager.merge(registration);
+		return entityManager.merge(registration);
 	}
 
 	@Override
-	public void updatetPassword(String email, String newPassword) {
+	public Registration updatetPassword(String email, String newPassword) {
 		registration = userRegistrationDetails(email);
 		registration.setPassword(newPassword);
-		entityManager.merge(registration);
+		return entityManager.merge(registration);
 	}
 
 	@Override
-	public String setDefaultPassword(String email) {
+	public Registration setDefaultPassword(String email) {
 		registration = userRegistrationDetails(email);
 		registration.setPassword("12345678");
-		entityManager.merge(registration);
-		return "12345678";
+		return entityManager.merge(registration);
 	}
 	
 
@@ -90,10 +90,10 @@ public class RegistrationRepoImpl implements RegistrationRepo {
 	}
 
 	@Override
-	public void updateBookedTicket(String email, int noOfTicket) {
+	public Registration updateBookedTicket(String email, int noOfTicket) {
 		registration = userRegistrationDetails(email);
-		registration.setNoOfBookedTicket(noOfTicket);
-		entityManager.merge(registration);
+		registration.setNoOfBookedTicket(noOfTicket + registration.getNoOfBookedTicket());
+		return entityManager.merge(registration);
 	}
 	
 }

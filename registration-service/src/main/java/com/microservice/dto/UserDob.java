@@ -3,19 +3,22 @@ package com.microservice.dto;
 import java.time.LocalDate;
 
 public class UserDob {
-	String userName;
+	String email;
 	String password;
 	LocalDate dob;
 	
 	public UserDob() {
 		super();
 	}
-	public String getUserName() {
-		return userName;
+
+	public String getEmail() {
+		return email;
 	}
-	public void setUserName(String userName) {
-		this.userName = userName;
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
+
 	public String getPassword() {
 		return password;
 	}
