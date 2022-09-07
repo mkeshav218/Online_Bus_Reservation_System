@@ -4,17 +4,29 @@ API-Details :-
 	API Type :- POST
 	URL :- http://localhost:8765/search-service/add/bus
 	Input JSON:- {
-    			"busName":"NewBus",
-    			"busType":"Driver",
-    			"busStatus":"Active"
+			"login":{
+    				"email":"a@gmail.com",
+    				"password":"password"
+				},
+			"busInfo":{
+    				"busName":"NewBus",
+    				"busType":"Driver",
+    				"busStatus":"Active"
+				}
 		     }
 		     
 2) Update Bus Status
 	API Type :- PUT
 	URL :- http://localhost:8765/search-service/update/bus/status
 	Input JSON:- {
-    			"busName":"NewBus",
-    			"busStatus":"InActive"
+			"login":{
+    				"email":"a@gmail.com",
+    				"password":"password"
+				},
+			"updateBus":{
+    				"busName":"NewBus",
+    				"busStatus":"InActive"
+				}
 		     }
 		     
 3) Remove Bus Details

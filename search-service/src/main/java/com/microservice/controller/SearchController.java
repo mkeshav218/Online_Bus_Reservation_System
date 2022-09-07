@@ -13,15 +13,19 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.microservice.ServiceProxy;
+import com.microservice.dto.BusInfoDto;
 import com.microservice.dto.GetBusRoute;
 import com.microservice.dto.GetDeleteBusDetails;
 import com.microservice.dto.GetDeleteBusRoute;
 import com.microservice.dto.GetDeleteBusType;
 import com.microservice.dto.SearchBus;
-import com.microservice.dto.UpdateBus;
+import com.microservice.dto.UpdateBusDto;
 import com.microservice.entity.BusDetails;
-import com.microservice.entity.BusRoute;
 import com.microservice.entity.BusInfo;
+import com.microservice.entity.BusRoute;
+import com.microservice.pojo.Login;
+import com.microservice.pojo.Registration;
 import com.microservice.service.SearchService;
 
 @RestController
@@ -31,25 +35,39 @@ public class SearchController {
 	@Autowired
 	SearchService searchService;
 	
+	@Autowired
+	ServiceProxy proxy;
+	
 	@GetMapping("/search")
 	public String searchS() {
 		return "Search-Service";
 	}
 	
 	@PostMapping("/add/bus")
-	public ResponseEntity<BusInfo> addNewBusDetails(@RequestBody BusInfo busInfo){
+	public ResponseEntity<BusInfo> addNewBusDetails(@RequestBody BusInfoDto busInfoDto){
 		try {
-			BusInfo bus = searchService.addNewBusDetails(busInfo);
+			Login login = busInfoDto.getLogin();
+			ResponseEntity<Registration> user = proxy.getRegisteredUser(login);
+			if(user.getBody()==null) {
+				return new ResponseEntity("User is not authorized",HttpStatus.UNAUTHORIZED);
+			}
+			BusInfo bus = searchService.addNewBusDetails(busInfoDto.getBusInfo());
 			return new ResponseEntity<BusInfo>(bus, HttpStatus.OK);
 		}catch (Exception e) {
+			e.printStackTrace();
 			return new ResponseEntity(e.getMessage(),HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 	}
 	
 	@PutMapping("/update/bus/status")
-	public ResponseEntity<BusInfo> updateBusStatus(@RequestBody UpdateBus updateBus) {
+	public ResponseEntity<BusInfo> updateBusStatus(@RequestBody UpdateBusDto updateBusDto ) {
 		try {
-			BusInfo bus = searchService.updateBusStatus(updateBus.getBusName(), updateBus.getBusStatus());
+			Login login = updateBusDto.getLogin();
+			ResponseEntity<Registration> user = proxy.getRegisteredUser(login);
+			if(user.getBody()==null) {
+				return new ResponseEntity("User is not authorized",HttpStatus.UNAUTHORIZED);
+			}
+			BusInfo bus = searchService.updateBusStatus(updateBusDto.getUpdateBus().getBusName(), updateBusDto.getUpdateBus().getBusStatus());
 			return new ResponseEntity<BusInfo>(bus, HttpStatus.OK);
 		}catch (Exception e) {
 			return new ResponseEntity(e.getMessage(),HttpStatus.UNPROCESSABLE_ENTITY);

@@ -18,6 +18,10 @@ public class UpdateBus {
 	public void setBusStatus(String busStatus) {
 		this.busStatus = busStatus;
 	}
+	@Override
+	public String toString() {
+		return "UpdateBus [busName=" + busName + ", busStatus=" + busStatus + "]";
+	}
 	
 	
 }

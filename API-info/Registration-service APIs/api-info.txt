@@ -11,7 +11,7 @@ API-Details :-
 		     }
 
 2) Get User Information
-	API Type :- GET
+	API Type :- POST
 	URL :- http://localhost:8765/registration-service/getRegisteredUser
 	Input JSON:- {
     			"email":"a@gmail.com",

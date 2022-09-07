@@ -43,13 +43,13 @@ public class RegistrationController {
 		}
 	}
 	
-	@GetMapping("/getRegisteredUser")
+	@PostMapping("/getRegisteredUser")
 	public ResponseEntity<Registration> getRegisteredUser(@RequestBody Login login){
 		try {
 			Registration registration = service.userRegistrationDetails(login.getEmail(),login.getPassword());
 			return new ResponseEntity<Registration>(registration, HttpStatus.OK);
 		}catch (Exception e) {
-			return new ResponseEntity(e.getMessage(), HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity(null, HttpStatus.OK);
 		}
 	}
 	

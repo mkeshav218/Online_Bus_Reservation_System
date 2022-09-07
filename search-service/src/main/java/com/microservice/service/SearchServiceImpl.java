@@ -23,7 +23,7 @@ public class SearchServiceImpl implements SearchService{
 		try {
 			return searchRepo.addNewBusDetails(newBus);
 		}catch(Exception e) {
-			throw new BusServiceException("Bus-Type already Present...!!");
+			throw new BusServiceException("Bus-Info already Present...!!");
 		}
 	}
 
@@ -32,6 +32,7 @@ public class SearchServiceImpl implements SearchService{
 		try {
 			return searchRepo.updateBusStatus(busName, busStatus);
 		}catch (Exception e) {
+			e.printStackTrace();
 			throw new BusServiceException(e.getMessage());
 		}
 	}
