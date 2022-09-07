@@ -21,7 +21,7 @@ import com.microservice.dto.SearchBus;
 import com.microservice.dto.UpdateBus;
 import com.microservice.entity.BusDetails;
 import com.microservice.entity.BusRoute;
-import com.microservice.entity.BusType;
+import com.microservice.entity.BusInfo;
 import com.microservice.service.SearchService;
 
 @RestController
@@ -36,35 +36,27 @@ public class SearchController {
 		return "Search-Service";
 	}
 	
-	@PostMapping("/add/bustype")
-	public ResponseEntity<String> addBusType(@RequestBody BusType busType){
+	@PostMapping("/add/bus")
+	public ResponseEntity<BusInfo> addNewBusDetails(@RequestBody BusInfo busInfo){
 		try {
-			int res = searchService.addBusType(busType);
-			if(res == 1) {
-				return new ResponseEntity<String>("Bus-Type added successfully", HttpStatus.OK);
-			}else {
-				return new ResponseEntity<String>("Bus-Type already Present...!!",HttpStatus.UNPROCESSABLE_ENTITY);
-			}
+			BusInfo bus = searchService.addNewBusDetails(busInfo);
+			return new ResponseEntity<BusInfo>(bus, HttpStatus.OK);
 		}catch (Exception e) {
-			return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
+			return new ResponseEntity(e.getMessage(),HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 	}
 	
-	@PutMapping("/update/bustype")
-	public ResponseEntity<String> updateBusStatus(@RequestBody UpdateBus updateBus) {
+	@PutMapping("/update/bus/status")
+	public ResponseEntity<BusInfo> updateBusStatus(@RequestBody UpdateBus updateBus) {
 		try {
-			int res = searchService.updateBusStatus(updateBus.getBusName(), updateBus.getBusStatus());
-			if(res == 1) {
-				return new ResponseEntity<String>("Bus-Status updated successfully", HttpStatus.OK);
-			}else {
-				return new ResponseEntity<String>("Bus-Status can't be updated...!!",HttpStatus.UNPROCESSABLE_ENTITY);
-			}
+			BusInfo bus = searchService.updateBusStatus(updateBus.getBusName(), updateBus.getBusStatus());
+			return new ResponseEntity<BusInfo>(bus, HttpStatus.OK);
 		}catch (Exception e) {
-			return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
+			return new ResponseEntity(e.getMessage(),HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 	}
 	
-	@DeleteMapping("/delete/bustype")
+	@DeleteMapping("/delete/businfo")
 	public ResponseEntity<String> removeBus(@RequestBody GetDeleteBusType busType){
 		try {
 			int res = searchService.deleteBus(busType.getBusName());
@@ -78,10 +70,10 @@ public class SearchController {
 		}
 	}
 	
-	@GetMapping("/getbustype")
-	public ResponseEntity<BusType> getBus(@RequestBody GetDeleteBusType busType){
+	@GetMapping("/businfo")
+	public ResponseEntity<BusInfo> getBus(@RequestBody GetDeleteBusType busType){
 		try {
-			return new ResponseEntity<BusType>(searchService.getBusType(busType.getBusName()), HttpStatus.OK);
+			return new ResponseEntity<BusInfo>(searchService.getBusInfo(busType.getBusName()), HttpStatus.OK);
 		}catch (Exception e) {
 			return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
 		}
@@ -89,9 +81,9 @@ public class SearchController {
 	
 	
 	@GetMapping("/getallbustype")
-	public ResponseEntity<List<BusType>> getAllBusType(){
+	public ResponseEntity<List<BusInfo>> getAllBusType(){
 		try {
-			return new ResponseEntity<List<BusType>>(searchService.getAllBusType(), HttpStatus.OK);
+			return new ResponseEntity<List<BusInfo>>(searchService.getAllBusType(), HttpStatus.OK);
 		}catch (Exception e) {
 			return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
 		}

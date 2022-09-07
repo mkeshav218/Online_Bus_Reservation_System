@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.microservice.entity.BusDetails;
 import com.microservice.entity.BusRoute;
-import com.microservice.entity.BusType;
+import com.microservice.entity.BusInfo;
 import com.microservice.exception.BusServiceException;
 import com.microservice.repository.SearchRepo;
 
@@ -19,26 +19,20 @@ public class SearchServiceImpl implements SearchService{
 	SearchRepo searchRepo;
 
 	@Override
-	public int addBusType(BusType newBus) {
+	public BusInfo addNewBusDetails(BusInfo newBus) {
 		try {
-			int res = searchRepo.addBusType(newBus);
-			if(res == 1) {
-				return 1;
-			}else {
-				return 0;
-			}
+			return searchRepo.addNewBusDetails(newBus);
 		}catch(Exception e) {
 			throw new BusServiceException("Bus-Type already Present...!!");
 		}
 	}
 
 	@Override
-	public int updateBusStatus(String busName, String busStatus) {
+	public BusInfo updateBusStatus(String busName, String busStatus) {
 		try {
-			searchRepo.updateBusStatus(busName, busStatus);
-			return 1;
+			return searchRepo.updateBusStatus(busName, busStatus);
 		}catch (Exception e) {
-			throw new BusServiceException("Cannot update bus status");
+			throw new BusServiceException(e.getMessage());
 		}
 	}
 
@@ -53,16 +47,16 @@ public class SearchServiceImpl implements SearchService{
 	}
 
 	@Override
-	public BusType getBusType(String busName) {
+	public BusInfo getBusInfo(String busName) {
 		try {
-			return searchRepo.getBusType(busName);
+			return searchRepo.getBusInfo(busName);
 		} catch (Exception e) {
 			throw new BusServiceException("No Bus Found");
 		}
 	}
 	
 	@Override
-	public List<BusType> getAllBusType(){
+	public List<BusInfo> getAllBusType(){
 		try {
 			return searchRepo.getAllBusType();
 		}catch (Exception e) {

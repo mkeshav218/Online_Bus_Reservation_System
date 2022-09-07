@@ -4,15 +4,15 @@ import java.util.List;
 
 import com.microservice.entity.BusDetails;
 import com.microservice.entity.BusRoute;
-import com.microservice.entity.BusType;
+import com.microservice.entity.BusInfo;
 
 public interface SearchRepo {
 	//Bus_Type Table Operations
-	public int addBusType(BusType newBus);
-	public void updateBusStatus(String busName, String busStatus);
+	public BusInfo addNewBusDetails(BusInfo newBus);
+	public BusInfo updateBusStatus(String busName, String busStatus);
 	public void deleteBus(String busName);
-	public BusType getBusType(String busName);
-	public List<BusType> getAllBusType();
+	public BusInfo getBusInfo(String busName);
+	public List<BusInfo> getAllBusType();
 	
 	//Bus_Details_table
 	public void addBusDetails(BusDetails busObj);

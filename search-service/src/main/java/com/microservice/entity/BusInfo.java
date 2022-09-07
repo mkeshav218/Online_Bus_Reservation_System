@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Entity
 @Table(name="Bus_Type")
 @Component
-public class BusType {
+public class BusInfo {
 	@Id
 	@Column(length=20)
 	private String busName;

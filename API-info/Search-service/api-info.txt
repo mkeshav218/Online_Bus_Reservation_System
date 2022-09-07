@@ -1,0 +1,26 @@
+API-Details :-
+
+1) Add Bus Details
+	API Type :- POST
+	URL :- http://localhost:8765/search-service/add/bus
+	Input JSON:- {
+    			"busName":"NewBus",
+    			"busType":"Driver",
+    			"busStatus":"Active"
+		     }
+		     
+2) Update Bus Status
+	API Type :- PUT
+	URL :- http://localhost:8765/search-service/update/bus/status
+	Input JSON:- {
+    			"busName":"NewBus",
+    			"busStatus":"InActive"
+		     }
+		     
+3) Remove Bus Details
+	API Type :- DELETE
+	URL :- http://localhost:8765/search-service/delete/businfo
+	Input JSON:- {
+    			"busName":"NewBus"
+		     }
+		     

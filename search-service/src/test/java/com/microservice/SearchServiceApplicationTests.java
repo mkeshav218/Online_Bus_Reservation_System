@@ -6,14 +6,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.microservice.entity.BusDetails;
 import com.microservice.entity.BusRoute;
-import com.microservice.entity.BusType;
+import com.microservice.entity.BusInfo;
 import com.microservice.service.SearchService;
 
 @SpringBootTest
 class SearchServiceApplicationTests {
 
 	@Autowired
-	BusType busType;
+	BusInfo busType;
 	
 	@Autowired
 	BusDetails busDetails;
@@ -31,13 +31,13 @@ class SearchServiceApplicationTests {
 		busType.setBusType("Driver");
 		busType.setBusStatus("Active");
 		
-		int result = searchService.addBusType(busType);
-		System.out.println("BusType res = " + result);
+//		BusInfo bus = searchService.getBusType(busType);
+//		System.out.println("BusType res = " + bus);
 		
 		busDetails.setNewBusName(busType);
 		busDetails.setRouteNo(1);
 		
-		result = searchService.addBusDetails(busDetails);
+		int result = searchService.addBusDetails(busDetails);
 		System.out.println("BusDetails res = " + result);
 
 		busRoute.setPathNo(1);
@@ -62,8 +62,8 @@ class SearchServiceApplicationTests {
 		busType.setBusType("Driver");
 		busType.setBusStatus("Active");
 		
-		int result = searchService.addBusType(busType);
-		System.out.println("BusType res = " + result);
+//		BusInfo bus = searchService.getBusType(busType);
+//		System.out.println("BusType res = " + bus);
 		
 		
 

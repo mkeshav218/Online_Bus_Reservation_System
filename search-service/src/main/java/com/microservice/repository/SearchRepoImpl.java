@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.microservice.entity.BusDetails;
 import com.microservice.entity.BusRoute;
-import com.microservice.entity.BusType;
+import com.microservice.entity.BusInfo;
 
 @Repository
 @Transactional
@@ -23,7 +23,7 @@ public class SearchRepoImpl implements SearchRepo {
 	EntityManager entityManager;
 	
 	@Autowired
-	BusType busType;
+	BusInfo busType;
 	
 	@Autowired 
 	BusDetails busDetails;
@@ -32,26 +32,16 @@ public class SearchRepoImpl implements SearchRepo {
 	BusRoute busRoute;
 
 	@Override
-	public int addBusType(BusType newBus) {
-		try {
-			busType = getBusType(newBus.getBusName());
-			if(busType == null) {
-				entityManager.persist(newBus);
-				return 1;
-			}else {
-				return 0;
-			}
-		} catch (Exception e) {
-			return 0;
-		}
-		
+	public BusInfo addNewBusDetails(BusInfo newBus) {
+		entityManager.persist(newBus);
+		return newBus;
 	}
 
 	@Override
-	public void updateBusStatus(String busName, String busStatus) {
-		busType = getBusType(busName);
+	public BusInfo updateBusStatus(String busName, String busStatus) {
+		busType = getBusInfo(busName);
 		busType.setBusStatus(busStatus);
-		entityManager.merge(busType);
+		return entityManager.merge(busType);
 	}
 
 	@Override
@@ -72,28 +62,28 @@ public class SearchRepoImpl implements SearchRepo {
 //			System.out.println("Route No >>>>>>>> "+route);
 //			deleteBusDetails(route);
 //		}	
-		busType = getBusType(busName);
+		busType = getBusInfo(busName);
 		entityManager.remove(busType);
 	}
 
 	@Override
-	public BusType getBusType(String busName) {
-		return entityManager.find(BusType.class, busName);
+	public BusInfo getBusInfo(String busName) {
+		return entityManager.find(BusInfo.class, busName);
 	}
 	
 	@Override
-	public List<BusType> getAllBusType(){
+	public List<BusInfo> getAllBusType(){
 		String hql = "FROM BusType";
 		Query query = entityManager.createQuery(hql);
-		List<BusType> busTypeList = query.getResultList();
+		List<BusInfo> busTypeList = query.getResultList();
 		return busTypeList;
 	}
 
 	@Override
 	public void addBusDetails(BusDetails busObj) {
-		busType = getBusType(busObj.getNewBusName().getBusName());
+		busType = getBusInfo(busObj.getNewBusName().getBusName());
 		if(busType == null) {
-			addBusType(busObj.getNewBusName());
+			addNewBusDetails(busObj.getNewBusName());
 		}
 		entityManager.persist(busObj);
 	}
@@ -113,9 +103,9 @@ public class SearchRepoImpl implements SearchRepo {
 
 	@Override
 	public void updateBusDetails(BusDetails busDetails) {
-		busType = getBusType(busDetails.getNewBusName().getBusName());
+		busType = getBusInfo(busDetails.getNewBusName().getBusName());
 		if(busType == null) {
-			addBusType(busType);
+			addNewBusDetails(busType);
 		}
 		entityManager.merge(busType);
 	}
