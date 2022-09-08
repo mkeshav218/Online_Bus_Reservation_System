@@ -13,7 +13,7 @@ import javax.persistence.Table;
 import org.springframework.stereotype.Component;
 
 @Entity
-@Table(name="Bus_Type")
+@Table(name="Bus_Info")
 @Component
 public class BusInfo {
 	@Id
@@ -25,7 +25,7 @@ public class BusInfo {
 	private String busStatus;
 	
 	@OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.REMOVE,orphanRemoval = true) 
-	private Set<BusDetails> newBusDetails;
+	private Set<BusDetails> busDetails;
 
 	public String getBusName() {
 		return busName;
@@ -51,18 +51,18 @@ public class BusInfo {
 		this.busStatus = busStatus;
 	}
 
-	public Set<BusDetails> getNewBusDetails() {
-		return newBusDetails;
+	public Set<BusDetails> getBusDetails() {
+		return busDetails;
 	}
 
-	public void setNewBusDetails(Set<BusDetails> newBusDetails) {
-		this.newBusDetails = newBusDetails;
+	public void setBusDetails(Set<BusDetails> busDetails) {
+		this.busDetails = busDetails;
 	}
 
 	@Override
 	public String toString() {
-		return "BusType [busName=" + busName + ", busType=" + busType + ", busStatus=" + busStatus + ", newBusDetails="
-				+ newBusDetails + "]";
+		return "BusType [busName=" + busName + ", busType=" + busType + ", busStatus=" + busStatus + ", busDetails="
+				+ busDetails + "]";
 	}
 
 

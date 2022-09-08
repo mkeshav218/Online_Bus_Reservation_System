@@ -1,12 +1,11 @@
-create table bus_type (bus_name varchar(20) not null, bus_status varchar(20), bus_type varchar(20), primary key (bus_name));
+create table bus_info (bus_name varchar(20) not null, bus_type varchar(20), bus_status varchar(20), primary key (bus_name));
 create table bus_details (route_no integer not null, new_bus_name varchar(20), primary key (route_no));
-create table bus_details_new_route (bus_details_route_no integer not null, new_route_path_no integer not null, primary key (bus_details_route_no, new_route_path_no));
-create table bus_route(path_no integer not null, bus_no integer, destination varchar(20), distance integer, fare integer, reach_time varchar(20), source varchar(20), start_time varchar(20), route_no integer, primary key (path_no));
-create table bus_type_new_bus_details (bus_type_bus_name varchar(20) not null, new_bus_details_route_no integer not null, primary key (bus_type_bus_name, new_bus_details_route_no));
+create table bus_route(path_no integer not null, bus_no integer, source varchar(20), destination varchar(20), distance integer,start_time varchar(20),reach_time varchar(20),  fare integer,  route_no integer, primary key (path_no));
 
-insert into bus_type(bus_name,bus_type,bus_status) values('RajRath','Driverless','Active');
-insert into bus_type(bus_name,bus_type,bus_status) values('DeepMala','Driver','Active');
-insert into bus_type(bus_name,bus_type,bus_status) values('Balaji','Driver','Active');
+
+insert into bus_info(bus_name,bus_type,bus_status) values('RajRath','Driverless','Active');
+insert into bus_info(bus_name,bus_type,bus_status) values('DeepMala','Driver','Active');
+insert into bus_info(bus_name,bus_type,bus_status) values('Balaji','Driver','Active');
 
 insert into bus_details(route_no,new_bus_name) values(1,'DeepMala');
 insert into bus_details(route_no,new_bus_name) values(2,'DeepMala');

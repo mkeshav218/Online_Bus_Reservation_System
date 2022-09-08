@@ -31,7 +31,7 @@ public class BusDetails {
 	private BusInfo newBusName;
 
 	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.REMOVE) 
-	private Set<BusRoute> newRoute;
+	private Set<BusRoute> busRoute;
 	
 	public BusDetails() { 
 		super();
@@ -53,17 +53,17 @@ public class BusDetails {
 		this.newBusName = newBusName;
 	}
 
-	public Set<BusRoute> getNewRoute() {
-		return newRoute;
+	public Set<BusRoute> getBusRoute() {
+		return busRoute;
 	}
 
-	public void setNewRoute(Set<BusRoute> newRoute) {
-		this.newRoute = newRoute;
+	public void setBusRoute(Set<BusRoute> busRoute) {
+		this.busRoute = busRoute;
 	}
 
 	@Override
 	public String toString() {
-		return "BusDetails [routeNo=" + routeNo + ", newBusName=" + newBusName + ", newRoute=" + newRoute + "]";
+		return "BusDetails [routeNo=" + routeNo + ", newBusName=" + newBusName + ", busRoute=" + busRoute + "]";
 	}
 	
 	
