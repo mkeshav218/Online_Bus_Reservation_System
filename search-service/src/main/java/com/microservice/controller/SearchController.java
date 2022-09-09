@@ -48,7 +48,11 @@ public class SearchController {
 		try {
 			Login login = busInfoDto.getLogin();
 			ResponseEntity<Registration> user = proxy.getRegisteredUser(login);
-			if(user.getBody()==null) {
+			Registration registration = user.getBody();
+			if(registration==null) {
+				return new ResponseEntity("User is not registered",HttpStatus.UNAUTHORIZED);
+			}
+			if(!registration.getRole().equalsIgnoreCase("ADMIN")) {
 				return new ResponseEntity("User is not authorized",HttpStatus.UNAUTHORIZED);
 			}
 			BusInfo bus = searchService.addNewBusDetails(busInfoDto.getBusInfo());
@@ -64,7 +68,11 @@ public class SearchController {
 		try {
 			Login login = updateBusDto.getLogin();
 			ResponseEntity<Registration> user = proxy.getRegisteredUser(login);
-			if(user.getBody()==null) {
+			Registration registration = user.getBody();
+			if(registration==null) {
+				return new ResponseEntity("User is not registered",HttpStatus.UNAUTHORIZED);
+			}
+			if(!registration.getRole().equalsIgnoreCase("ADMIN")) {
 				return new ResponseEntity("User is not authorized",HttpStatus.UNAUTHORIZED);
 			}
 			BusInfo bus = searchService.updateBusStatus(updateBusDto.getUpdateBus().getBusName(), updateBusDto.getUpdateBus().getBusStatus());

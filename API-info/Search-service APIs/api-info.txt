@@ -5,8 +5,8 @@ API-Details :-
 	URL :- http://localhost:8765/search-service/add/bus
 	Input JSON:- {
 			"login":{
-    				"email":"a@gmail.com",
-    				"password":"password"
+    				"email":"admin@gmail.com",
+    				"password":"admin"
 				},
 			"busInfo":{
     				"busName":"NewBus",

@@ -13,6 +13,7 @@ public class Registration {
 	private String gender;	
 	private int noOfBookedTicket;	
 	private double wallet;
+	private String role;
 
 	public Registration() {
 		super();
@@ -90,13 +91,19 @@ public class Registration {
 		this.wallet = wallet;
 	}
 
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
 	@Override
 	public String toString() {
 		return "Registration [email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + ", password="
 				+ password + ", phone=" + phone + ", dateOfBirth=" + dateOfBirth + ", gender=" + gender
-				+ ", noOfBookedTicket=" + noOfBookedTicket + ", wallet=" + wallet + "]";
+				+ ", noOfBookedTicket=" + noOfBookedTicket + ", wallet=" + wallet + ", role=" + role + "]";
 	}
-	
-	
 	
 }

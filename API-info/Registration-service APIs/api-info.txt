@@ -7,7 +7,8 @@ API-Details :-
     			"email":"a@gmail.com",
     			"firstName":"a",
     			"lastName":"b",
-    			"password":"password"
+    			"password":"password",
+    			"role":"CUSTOMER"
 		     }
 
 2) Get User Information
