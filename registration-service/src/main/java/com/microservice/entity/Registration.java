@@ -41,6 +41,9 @@ public class Registration {
 	
 	@Column(length=20)
 	private double wallet;
+	
+	@Column(length=20)
+	private String role;
 
 	public Registration() {
 		super();
@@ -116,6 +119,21 @@ public class Registration {
 
 	public void setWallet(double wallet) {
 		this.wallet = wallet;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	@Override
+	public String toString() {
+		return "Registration [email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + ", password="
+				+ password + ", phone=" + phone + ", dateOfBirth=" + dateOfBirth + ", gender=" + gender
+				+ ", noOfBookedTicket=" + noOfBookedTicket + ", wallet=" + wallet + ", role=" + role + "]";
 	}
 	
 	
