@@ -14,11 +14,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.microservice.ServiceProxy;
+import com.microservice.dto.BusDetailsDto;
 import com.microservice.dto.BusInfoDto;
 import com.microservice.dto.GetBusRoute;
 import com.microservice.dto.GetDeleteBusDetails;
 import com.microservice.dto.GetDeleteBusRoute;
-import com.microservice.dto.GetDeleteBusType;
+import com.microservice.dto.GetDeleteBusTypeDto;
 import com.microservice.dto.SearchBus;
 import com.microservice.dto.UpdateBusDto;
 import com.microservice.entity.BusDetails;
@@ -83,49 +84,79 @@ public class SearchController {
 	}
 	
 	@DeleteMapping("/delete/businfo")
-	public ResponseEntity<String> removeBus(@RequestBody GetDeleteBusType busType){
+	public ResponseEntity<String> removeBus(@RequestBody GetDeleteBusTypeDto deleteBusType){
 		try {
-			int res = searchService.deleteBus(busType.getBusName());
+			Login login = deleteBusType.getLogin();
+			ResponseEntity<Registration> user = proxy.getRegisteredUser(login);
+			Registration registration = user.getBody();
+			if(registration==null) {
+				return new ResponseEntity("User is not registered",HttpStatus.UNAUTHORIZED);
+			}
+			if(!registration.getRole().equalsIgnoreCase("ADMIN")) {
+				return new ResponseEntity("User is not authorized",HttpStatus.UNAUTHORIZED);
+			}
+			int res = searchService.deleteBus(deleteBusType.getBusInfo().getBusName());
 			if(res == 1) {
 				return new ResponseEntity<String>("Bus info removed successfully", HttpStatus.OK);
 			}else {
 				return new ResponseEntity<String>("Error occured in removing bus info", HttpStatus.UNPROCESSABLE_ENTITY);
 			}
 		}catch (Exception e) {
-			return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>(e.getMessage(),HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 	}
 	
-	@GetMapping("/businfo")
-	public ResponseEntity<BusInfo> getBus(@RequestBody GetDeleteBusType busType){
+	@GetMapping("/fetch/businfo")
+	public ResponseEntity<BusInfo> getBus(@RequestBody GetDeleteBusTypeDto getBus){
 		try {
-			return new ResponseEntity<BusInfo>(searchService.getBusInfo(busType.getBusName()), HttpStatus.OK);
+			Login login = getBus.getLogin();
+			ResponseEntity<Registration> user = proxy.getRegisteredUser(login);
+			Registration registration = user.getBody();
+			if(registration==null) {
+				return new ResponseEntity("User is not registered",HttpStatus.UNAUTHORIZED);
+			}
+			if(!registration.getRole().equalsIgnoreCase("ADMIN")) {
+				return new ResponseEntity("User is not authorized",HttpStatus.UNAUTHORIZED);
+			}
+			return new ResponseEntity<BusInfo>(searchService.getBusInfo(getBus.getBusInfo().getBusName()), HttpStatus.OK);
 		}catch (Exception e) {
-			return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
+			return new ResponseEntity(e.getMessage(),HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 	}
 	
-	
-	@GetMapping("/getallbustype")
-	public ResponseEntity<List<BusInfo>> getAllBusType(){
+	@GetMapping("/getallbusinfo")
+	public ResponseEntity<List<BusInfo>> getAllBusType(@RequestBody Login userInfo){
 		try {
+			ResponseEntity<Registration> user = proxy.getRegisteredUser(userInfo);
+			Registration registration = user.getBody();
+			if(registration==null) {
+				return new ResponseEntity("User is not registered",HttpStatus.UNAUTHORIZED);
+			}
+			if(!registration.getRole().equalsIgnoreCase("ADMIN")) {
+				return new ResponseEntity("User is not authorized",HttpStatus.UNAUTHORIZED);
+			}
 			return new ResponseEntity<List<BusInfo>>(searchService.getAllBusType(), HttpStatus.OK);
 		}catch (Exception e) {
-			return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
+			return new ResponseEntity(e.getMessage(),HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 	}
 	
 	@PostMapping("/add/busdetails")
-	public ResponseEntity<String> addBusDetails(@RequestBody BusDetails busDetails){
+	public ResponseEntity<BusDetails> addBusDetails(@RequestBody BusDetailsDto busDetailsDto){
 		try {
-			int res = searchService.addBusDetails(busDetails);
-			if(res == 1) {
-				return new ResponseEntity<String>("Bus Details added successfully", HttpStatus.OK);
-			}else {
-				return new ResponseEntity<String>("Cannot add bus details",HttpStatus.UNPROCESSABLE_ENTITY);
+			Login login = busDetailsDto.getLogin();
+			ResponseEntity<Registration> user = proxy.getRegisteredUser(login);
+			Registration registration = user.getBody();
+			if(registration==null) {
+				return new ResponseEntity("User is not registered",HttpStatus.UNAUTHORIZED);
 			}
+			if(!registration.getRole().equalsIgnoreCase("ADMIN")) {
+				return new ResponseEntity("User is not authorized",HttpStatus.UNAUTHORIZED);
+			}
+			BusDetails busDetails = searchService.addBusDetails(busDetailsDto.getBusDetails());
+			return new ResponseEntity<BusDetails>(busDetails, HttpStatus.OK);
 		}catch (Exception e) {
-			return new ResponseEntity<String>(e.getMessage(),HttpStatus.UNPROCESSABLE_ENTITY);
+			return new ResponseEntity(e.getMessage(),HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 	}
 	

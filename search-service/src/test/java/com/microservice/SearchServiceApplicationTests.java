@@ -27,45 +27,31 @@ class SearchServiceApplicationTests {
 	@Test
 	void test1() {
 		
-		busType.setBusName("Deepmala");
-		busType.setBusType("Driver");
-		busType.setBusStatus("Active");
-		
-//		BusInfo bus = searchService.getBusType(busType);
-//		System.out.println("BusType res = " + bus);
-		
-		busDetails.setNewBusName(busType);
-		busDetails.setRouteNo(1);
-		
-		int result = searchService.addBusDetails(busDetails);
-		System.out.println("BusDetails res = " + result);
-
-		busRoute.setPathNo(1);
-		busRoute.setBusNo(101);
-		busRoute.setSource("Supaul");
-		busRoute.setDestination("Mumbai");
-		busRoute.setDistance(1500);
-		busRoute.setStartTime("05:00");
-		busRoute.setReachTime("17:00");
-		busRoute.setFare(1500);
-		busRoute.setNewBusDetails(busDetails);
-		
-		result = searchService.addRoute(busRoute);
-		System.out.println("BusRoute res = " + result);
-
-	}
-	
-	@Test
-	void test2() {
-		
-		busType.setBusName("RajRath");
-		busType.setBusType("Driver");
-		busType.setBusStatus("Active");
-		
-//		BusInfo bus = searchService.getBusType(busType);
-//		System.out.println("BusType res = " + bus);
-		
-		
+//		busType.setBusName("Deepmala");
+//		busType.setBusType("Driver");
+//		busType.setBusStatus("Active");
+//		
+////		BusInfo bus = searchService.getBusType(busType);
+////		System.out.println("BusType res = " + bus);
+//		
+//		busDetails.setNewBusName(busType);
+//		busDetails.setRouteNo(1);
+//		
+//		int result = searchService.addBusDetails(busDetails);
+//		System.out.println("BusDetails res = " + result);
+//
+//		busRoute.setPathNo(1);
+//		busRoute.setBusNo(101);
+//		busRoute.setSource("Supaul");
+//		busRoute.setDestination("Mumbai");
+//		busRoute.setDistance(1500);
+//		busRoute.setStartTime("05:00");
+//		busRoute.setReachTime("17:00");
+//		busRoute.setFare(1500);
+//		busRoute.setNewBusDetails(busDetails);
+//		
+//		result = searchService.addRoute(busRoute);
+//		System.out.println("BusRoute res = " + result);
 
 	}
 

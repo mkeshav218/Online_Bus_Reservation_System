@@ -15,7 +15,7 @@ public interface SearchRepo {
 	public List<BusInfo> getAllBusType();
 	
 	//Bus_Details_table
-	public void addBusDetails(BusDetails busObj);
+	public BusDetails addBusDetails(BusDetails busObj);
 	public void deleteBusDetails(int routeNo);
 	public void updateBusDetails(BusDetails busDetails);
 	public BusDetails getBus(int routeNo);

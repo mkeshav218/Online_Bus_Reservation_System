@@ -66,12 +66,11 @@ public class SearchServiceImpl implements SearchService{
 	}
 
 	@Override
-	public int addBusDetails(BusDetails busObj) {
+	public BusDetails addBusDetails(BusDetails busObj) {
 		try {
-			searchRepo.addBusDetails(busObj);
-			return 1;
+			return searchRepo.addBusDetails(busObj);
 		} catch (Exception e) {
-			throw new BusServiceException("Cannot add bus details");
+			throw new BusServiceException(e.getMessage());
 		}
 	}
 

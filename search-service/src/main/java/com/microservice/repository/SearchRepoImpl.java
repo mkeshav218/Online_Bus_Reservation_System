@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.microservice.entity.BusDetails;
 import com.microservice.entity.BusRoute;
+import com.microservice.exception.BusServiceException;
 import com.microservice.entity.BusInfo;
 
 @Repository
@@ -73,19 +74,21 @@ public class SearchRepoImpl implements SearchRepo {
 	
 	@Override
 	public List<BusInfo> getAllBusType(){
-		String hql = "FROM BusType";
+		String hql = "FROM BusInfo";
 		Query query = entityManager.createQuery(hql);
 		List<BusInfo> busTypeList = query.getResultList();
 		return busTypeList;
 	}
 
 	@Override
-	public void addBusDetails(BusDetails busObj) {
-		busType = getBusInfo(busObj.getNewBusName().getBusName());
+	public BusDetails addBusDetails(BusDetails busObj) {
+		busType = getBusInfo(busObj.getBusInfo().getBusName());
 		if(busType == null) {
-			addNewBusDetails(busObj.getNewBusName());
+			throw new BusServiceException("Bus Info is not found hence cannot add bus-details");
+		}else {
+			entityManager.persist(busObj);
+			return busObj;
 		}
-		entityManager.persist(busObj);
 	}
 
 	@Override
@@ -103,7 +106,7 @@ public class SearchRepoImpl implements SearchRepo {
 
 	@Override
 	public void updateBusDetails(BusDetails busDetails) {
-		busType = getBusInfo(busDetails.getNewBusName().getBusName());
+		busType = getBusInfo(busDetails.getBusInfo().getBusName());
 		if(busType == null) {
 			addNewBusDetails(busType);
 		}
@@ -170,9 +173,9 @@ public class SearchRepoImpl implements SearchRepo {
 			str[6]=busRoute.getReachTime();
 			str[7]=""+busRoute.getFare();
 			str[8]=""+busRoute.getBusNo();
-			str[9]=busRoute.getNewBusDetails().getNewBusName().getBusName();
-			str[10]=busRoute.getNewBusDetails().getNewBusName().getBusType();
-			str[11]=busRoute.getNewBusDetails().getNewBusName().getBusStatus();
+			str[9]=busRoute.getNewBusDetails().getBusInfo().getBusName();
+			str[10]=busRoute.getNewBusDetails().getBusInfo().getBusType();
+			str[11]=busRoute.getNewBusDetails().getBusInfo().getBusStatus();
 			availableBus.add(str);
 		}
 		return availableBus;

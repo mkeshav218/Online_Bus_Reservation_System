@@ -7,7 +7,7 @@ import com.microservice.entity.BusRoute;
 import com.microservice.entity.BusInfo;
 
 public interface SearchService {
-	//Bus_Type Table Operations
+	//Bus_Info Table Operations
 	public BusInfo addNewBusDetails(BusInfo newBus);
 	public BusInfo updateBusStatus(String busName, String busStatus);
 	public int deleteBus(String busName);
@@ -16,7 +16,7 @@ public interface SearchService {
 
 	
 	//Bus_Details_table
-	public int addBusDetails(BusDetails busObj); 
+	public BusDetails addBusDetails(BusDetails busObj); 
 	public int deleteBusDetails(int routeNo);  
 	public int updateBusDetails(BusDetails busDetails); 
 	public BusDetails getBus(int routeNo);

@@ -26,9 +26,9 @@ public class BusDetails {
 	private int routeNo;
 	
 	@ManyToOne(cascade = CascadeType.DETACH) 
-	@JoinColumn(name="new_bus_name")
+	@JoinColumn(name="busInfo")
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private BusInfo newBusName;
+	private BusInfo busInfo;
 
 	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.REMOVE) 
 	private Set<BusRoute> busRoute;
@@ -45,12 +45,12 @@ public class BusDetails {
 		this.routeNo = routeNo;
 	}
 
-	public BusInfo getNewBusName() {
-		return newBusName;
+	public BusInfo getBusInfo() {
+		return busInfo;
 	}
 
-	public void setNewBusName(BusInfo newBusName) {
-		this.newBusName = newBusName;
+	public void setBusInfo(BusInfo busInfo) {
+		this.busInfo = busInfo;
 	}
 
 	public Set<BusRoute> getBusRoute() {
@@ -63,10 +63,9 @@ public class BusDetails {
 
 	@Override
 	public String toString() {
-		return "BusDetails [routeNo=" + routeNo + ", newBusName=" + newBusName + ", busRoute=" + busRoute + "]";
+		return "BusDetails [routeNo=" + routeNo + ", busInfo=" + busInfo + ", busRoute=" + busRoute + "]";
 	}
-	
-	
+
 	
 }
 
