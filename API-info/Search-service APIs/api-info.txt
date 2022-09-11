@@ -23,7 +23,7 @@ API-Details :-
     				"email":"admin@gmail.com",
     				"password":"admin"
 				},
-			"updateBus":{
+			"busInfo":{
     				"busName":"NewBus",
     				"busStatus":"InActive"
 				}
@@ -59,9 +59,11 @@ API-Details :-
 	API Type :- GET
 	URL :- http://localhost:8765/search-service/getallbusinfo
 	Input JSON:- {
-    			"email":"admin@gmail.com",
-    			"password":"admin"
-		     }
+			"login":{
+    				"email":"admin@gmail.com",
+    				"password":"admin"
+				}
+		     } 
 		    
 6) Add Bus Details
 	API Type :- POST
@@ -73,7 +75,60 @@ API-Details :-
 				},
 			"busDetails":{
 				"routeNo":5,
-    				"busName":"NewBus"
+    				"busInfo":{
+    					     "busName":"NewBus"
+					  }
+				     }
+		     } 
+
+7) Delete Bus Details
+	API Type :- DELETE
+	URL :- http://localhost:8765/search-service/delete/busdetails
+	Input JSON:- {
+			"login":{
+    				"email":"admin@gmail.com",
+    				"password":"admin"
+				},
+			"busDetails":{
+				"routeNo":5
 				}
 		     } 
+
+8) Update Bus Details
+	API Type :- PUT
+	URL :- http://localhost:8765/search-service/update/busdetails
+	Input JSON:- {
+			"login":{
+    				"email":"admin@gmail.com",
+    				"password":"admin"
+				},
+			"busDetails":{
+				"routeNo":5,
+				"busInfo":{
+    					     "busName":"NewBus"
+					  }
+				     }
+		     } 
 		    
+9) Get Bus Details
+	API Type :- GET
+	URL :- http://localhost:8765/search-service/fetch/busdetail
+	Input JSON:- {
+			"login":{
+    				"email":"admin@gmail.com",
+    				"password":"admin"
+				},
+			"busDetails":{
+				"routeNo":5
+				}
+		     } 
+
+10) Get All-Bus Details
+	API Type :- GET
+	URL :- http://localhost:8765/search-service/getallbusdetails
+	Input JSON:- {
+			"login":{
+    				"email":"admin@gmail.com",
+    				"password":"admin"
+				}
+		     } 

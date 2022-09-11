@@ -18,7 +18,7 @@ public interface SearchService {
 	//Bus_Details_table
 	public BusDetails addBusDetails(BusDetails busObj); 
 	public int deleteBusDetails(int routeNo);  
-	public int updateBusDetails(BusDetails busDetails); 
+	public BusDetails updateBusDetails(BusDetails busDetails); 
 	public BusDetails getBus(int routeNo);
 	public List<BusDetails> getAllBusDetails();  
 	

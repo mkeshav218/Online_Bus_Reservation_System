@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.microservice.entity.BusDetails;
@@ -70,6 +71,9 @@ public class SearchServiceImpl implements SearchService{
 		try {
 			return searchRepo.addBusDetails(busObj);
 		} catch (Exception e) {
+			if(e.getClass().getName().equalsIgnoreCase("org.springframework.dao.DataIntegrityViolationException")) {
+				throw new BusServiceException("Bus Details already exists");
+			}
 			throw new BusServiceException(e.getMessage());
 		}
 	}
@@ -80,15 +84,15 @@ public class SearchServiceImpl implements SearchService{
 			searchRepo.deleteBusDetails(routeNo);
 			return 1;
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new BusServiceException("Cannot remove bus details");
 		}
 	}
 
 	@Override
-	public int updateBusDetails(BusDetails busDetails) {
+	public BusDetails updateBusDetails(BusDetails busDetails) {
 		try {
-			searchRepo.updateBusDetails(busDetails);
-			return 1;
+			return searchRepo.updateBusDetails(busDetails);
 		} catch (Exception e) {
 			throw new BusServiceException("Cannot update bus details");
 		}

@@ -105,12 +105,13 @@ public class SearchRepoImpl implements SearchRepo {
 	}
 
 	@Override
-	public void updateBusDetails(BusDetails busDetails) {
+	public BusDetails updateBusDetails(BusDetails busDetails) {
 		busType = getBusInfo(busDetails.getBusInfo().getBusName());
 		if(busType == null) {
-			addNewBusDetails(busType);
+			throw new BusServiceException("Bus Info is not found hence cannot update bus-details");
+		}else {
+			return entityManager.merge(busDetails);
 		}
-		entityManager.merge(busType);
 	}
 
 	@Override

@@ -17,11 +17,8 @@ import com.microservice.ServiceProxy;
 import com.microservice.dto.BusDetailsDto;
 import com.microservice.dto.BusInfoDto;
 import com.microservice.dto.GetBusRoute;
-import com.microservice.dto.GetDeleteBusDetails;
 import com.microservice.dto.GetDeleteBusRoute;
-import com.microservice.dto.GetDeleteBusTypeDto;
 import com.microservice.dto.SearchBus;
-import com.microservice.dto.UpdateBusDto;
 import com.microservice.entity.BusDetails;
 import com.microservice.entity.BusInfo;
 import com.microservice.entity.BusRoute;
@@ -38,11 +35,6 @@ public class SearchController {
 	
 	@Autowired
 	ServiceProxy proxy;
-	
-	@GetMapping("/search")
-	public String searchS() {
-		return "Search-Service";
-	}
 	
 	@PostMapping("/add/bus")
 	public ResponseEntity<BusInfo> addNewBusDetails(@RequestBody BusInfoDto busInfoDto){
@@ -65,7 +57,7 @@ public class SearchController {
 	}
 	
 	@PutMapping("/update/bus/status")
-	public ResponseEntity<BusInfo> updateBusStatus(@RequestBody UpdateBusDto updateBusDto ) {
+	public ResponseEntity<BusInfo> updateBusStatus(@RequestBody BusInfoDto updateBusDto ) {
 		try {
 			Login login = updateBusDto.getLogin();
 			ResponseEntity<Registration> user = proxy.getRegisteredUser(login);
@@ -76,7 +68,7 @@ public class SearchController {
 			if(!registration.getRole().equalsIgnoreCase("ADMIN")) {
 				return new ResponseEntity("User is not authorized",HttpStatus.UNAUTHORIZED);
 			}
-			BusInfo bus = searchService.updateBusStatus(updateBusDto.getUpdateBus().getBusName(), updateBusDto.getUpdateBus().getBusStatus());
+			BusInfo bus = searchService.updateBusStatus(updateBusDto.getBusInfo().getBusName(), updateBusDto.getBusInfo().getBusStatus());
 			return new ResponseEntity<BusInfo>(bus, HttpStatus.OK);
 		}catch (Exception e) {
 			return new ResponseEntity(e.getMessage(),HttpStatus.UNPROCESSABLE_ENTITY);
@@ -84,9 +76,9 @@ public class SearchController {
 	}
 	
 	@DeleteMapping("/delete/businfo")
-	public ResponseEntity<String> removeBus(@RequestBody GetDeleteBusTypeDto deleteBusType){
+	public ResponseEntity<String> removeBus(@RequestBody BusInfoDto deleteBusInfo){
 		try {
-			Login login = deleteBusType.getLogin();
+			Login login = deleteBusInfo.getLogin();
 			ResponseEntity<Registration> user = proxy.getRegisteredUser(login);
 			Registration registration = user.getBody();
 			if(registration==null) {
@@ -95,7 +87,7 @@ public class SearchController {
 			if(!registration.getRole().equalsIgnoreCase("ADMIN")) {
 				return new ResponseEntity("User is not authorized",HttpStatus.UNAUTHORIZED);
 			}
-			int res = searchService.deleteBus(deleteBusType.getBusInfo().getBusName());
+			int res = searchService.deleteBus(deleteBusInfo.getBusInfo().getBusName());
 			if(res == 1) {
 				return new ResponseEntity<String>("Bus info removed successfully", HttpStatus.OK);
 			}else {
@@ -107,7 +99,7 @@ public class SearchController {
 	}
 	
 	@GetMapping("/fetch/businfo")
-	public ResponseEntity<BusInfo> getBus(@RequestBody GetDeleteBusTypeDto getBus){
+	public ResponseEntity<BusInfo> getBus(@RequestBody BusInfoDto getBus){
 		try {
 			Login login = getBus.getLogin();
 			ResponseEntity<Registration> user = proxy.getRegisteredUser(login);
@@ -125,9 +117,10 @@ public class SearchController {
 	}
 	
 	@GetMapping("/getallbusinfo")
-	public ResponseEntity<List<BusInfo>> getAllBusType(@RequestBody Login userInfo){
+	public ResponseEntity<List<BusInfo>> getAllBusType(@RequestBody BusInfoDto userInfo){
 		try {
-			ResponseEntity<Registration> user = proxy.getRegisteredUser(userInfo);
+			Login login = userInfo.getLogin();
+			ResponseEntity<Registration> user = proxy.getRegisteredUser(login);
 			Registration registration = user.getBody();
 			if(registration==null) {
 				return new ResponseEntity("User is not registered",HttpStatus.UNAUTHORIZED);
@@ -161,9 +154,18 @@ public class SearchController {
 	}
 	
 	@DeleteMapping("/delete/busdetails")
-	public ResponseEntity<String> removeBus(@RequestBody GetDeleteBusDetails deleteBusDetails){
+	public ResponseEntity<String> removeBus(@RequestBody BusDetailsDto deleteBusDetailsDto){
 		try {
-			int res = searchService.deleteBusDetails(deleteBusDetails.getRouteNo());
+			Login login = deleteBusDetailsDto.getLogin();
+			ResponseEntity<Registration> user = proxy.getRegisteredUser(login);
+			Registration registration = user.getBody();
+			if(registration==null) {
+				return new ResponseEntity("User is not registered",HttpStatus.UNAUTHORIZED);
+			}
+			if(!registration.getRole().equalsIgnoreCase("ADMIN")) {
+				return new ResponseEntity("User is not authorized",HttpStatus.UNAUTHORIZED);
+			}
+			int res = searchService.deleteBusDetails(deleteBusDetailsDto.getBusDetails().getRouteNo());
 			if(res == 1) {
 				return new ResponseEntity<String>("Bus info removed successfully", HttpStatus.OK);
 			}else {
@@ -175,31 +177,55 @@ public class SearchController {
 	}
 	
 	@PutMapping("/update/busdetails")
-	public ResponseEntity<String> updateBusDetails(@RequestBody BusDetails updateBusDetails) {
+	public ResponseEntity<BusDetails> updateBusDetails(@RequestBody BusDetailsDto updateBusDetailsDto) {
 		try {
-			int res = searchService.updateBusDetails(updateBusDetails);
-			if(res == 1) {
-				return new ResponseEntity<String>("Bus-Details updated successfully", HttpStatus.OK);
-			}else {
-				return new ResponseEntity<String>("Bus-Details can't be updated...!!",HttpStatus.UNPROCESSABLE_ENTITY);
+			Login login = updateBusDetailsDto.getLogin();
+			ResponseEntity<Registration> user = proxy.getRegisteredUser(login);
+			Registration registration = user.getBody();
+			if(registration==null) {
+				return new ResponseEntity("User is not registered",HttpStatus.UNAUTHORIZED);
 			}
+			if(!registration.getRole().equalsIgnoreCase("ADMIN")) {
+				return new ResponseEntity("User is not authorized",HttpStatus.UNAUTHORIZED);
+			}
+			BusDetails busDetailsObj = searchService.updateBusDetails(updateBusDetailsDto.getBusDetails());
+			return new ResponseEntity<BusDetails>(busDetailsObj, HttpStatus.OK);
 		}catch (Exception e) {
-			return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
+			return new ResponseEntity(e.getMessage(),HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 	}
 	
-	@GetMapping("/getbusdetails")
-	public ResponseEntity<BusDetails> getBus(@RequestBody GetDeleteBusDetails getBusDetails){
+	@GetMapping("/fetch/busdetail")
+	public ResponseEntity<BusDetails> getBus(@RequestBody BusDetailsDto getBusDetails){
 		try {
-			return new ResponseEntity<BusDetails>(searchService.getBus(getBusDetails.getRouteNo()), HttpStatus.OK);
+			Login login = getBusDetails.getLogin();
+			ResponseEntity<Registration> user = proxy.getRegisteredUser(login);
+			Registration registration = user.getBody();
+			if(registration==null) {
+				return new ResponseEntity("User is not registered",HttpStatus.UNAUTHORIZED);
+			}
+			if(!registration.getRole().equalsIgnoreCase("ADMIN")) {
+				return new ResponseEntity("User is not authorized",HttpStatus.UNAUTHORIZED);
+			}
+			return new ResponseEntity<BusDetails>(searchService.getBus(getBusDetails.getBusDetails().getRouteNo()), HttpStatus.OK);
 		}catch (Exception e) {
 			return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
 		}
 	}
 	
 	@GetMapping("/getallbusdetails")
-	public ResponseEntity<List<BusDetails>> getAllBusDetails(){
+	public ResponseEntity<List<BusDetails>> getAllBusDetails(@RequestBody BusDetailsDto getBusDetails){
+
 		try {
+			Login login = getBusDetails.getLogin();
+			ResponseEntity<Registration> user = proxy.getRegisteredUser(login);
+			Registration registration = user.getBody();
+			if(registration==null) {
+				return new ResponseEntity("User is not registered",HttpStatus.UNAUTHORIZED);
+			}
+			if(!registration.getRole().equalsIgnoreCase("ADMIN")) {
+				return new ResponseEntity("User is not authorized",HttpStatus.UNAUTHORIZED);
+			}
 			return new ResponseEntity<List<BusDetails>>(searchService.getAllBusDetails(), HttpStatus.OK);
 		}catch (Exception e) {
 			return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
