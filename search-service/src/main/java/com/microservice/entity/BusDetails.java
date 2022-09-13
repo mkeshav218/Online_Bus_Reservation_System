@@ -30,7 +30,7 @@ public class BusDetails {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private BusInfo busInfo;
 
-	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.REMOVE) 
+	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.REMOVE,orphanRemoval = true) 
 	private Set<BusRoute> busRoute;
 	
 	public BusDetails() { 

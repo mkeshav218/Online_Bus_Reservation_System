@@ -23,7 +23,7 @@ public interface SearchRepo {
 
 	
 	//Route Table
-	public int addRoute(BusRoute newRoute);
+	public BusRoute addRoute(BusRoute newRoute);
 	public void deleteRoute(int pathNo);
 	public List<String[]> searchBus(String src, String dest);  //return list of bus_Details
 	public BusRoute getRouteDetails(int pathNo);

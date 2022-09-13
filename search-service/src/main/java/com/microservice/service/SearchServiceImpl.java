@@ -117,16 +117,16 @@ public class SearchServiceImpl implements SearchService{
 	}
 
 	@Override
-	public int addRoute(BusRoute newRoute) {
+	public BusRoute addRoute(BusRoute newRoute) {
 		try {
-			int res = searchRepo.addRoute(newRoute);
-			if(res == 1) {
-				return 1;
-			}else {
-				return 0;
-			}
+			return searchRepo.addRoute(newRoute);
 		} catch (Exception e) {
-			throw new BusServiceException("Bus-Route Already Present...!!");
+			System.out.println(e.getClass());
+			System.out.println(e.getClass().getName());
+			if(e.getClass().getName().equalsIgnoreCase("org.springframework.dao.DataIntegrityViolationException")) {
+				throw new BusServiceException("Bus Route already exists");
+			}
+			throw new BusServiceException(e.getMessage());
 		}
 	}
 

@@ -23,7 +23,7 @@ public interface SearchService {
 	public List<BusDetails> getAllBusDetails();  
 	
 	//Route Table
-	public int addRoute(BusRoute newRoute); 
+	public BusRoute addRoute(BusRoute newRoute); 
 	public int deleteRoute(int pathNo);  
 	public List<String[]> searchBus(String src, String dest, String fromTime, String toTime, String typeOfUser);  //return list of bus_Details
 	public BusRoute getRouteDetails(int busNo, String source, String destination);

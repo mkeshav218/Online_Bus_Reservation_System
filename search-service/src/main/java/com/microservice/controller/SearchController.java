@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.microservice.ServiceProxy;
 import com.microservice.dto.BusDetailsDto;
 import com.microservice.dto.BusInfoDto;
+import com.microservice.dto.BusRouteDto;
 import com.microservice.dto.GetBusRoute;
 import com.microservice.dto.GetDeleteBusRoute;
 import com.microservice.dto.SearchBus;
@@ -233,16 +234,21 @@ public class SearchController {
 	}
 	
 	@PostMapping("/add/busroute")
-	public ResponseEntity<String> addBusRoute(@RequestBody BusRoute busRoute){
+	public ResponseEntity<BusRoute> addBusRoute(@RequestBody BusRouteDto addNewRoute){
 		try {
-			int res = searchService.addRoute(busRoute);
-			if(res == 1) {
-				return new ResponseEntity<String>("Bus Route added successfully", HttpStatus.OK);
-			}else {
-				return new ResponseEntity<String>("Bus-Route Already Present...!!",HttpStatus.UNPROCESSABLE_ENTITY);
+			Login login = addNewRoute.getLogin();
+			ResponseEntity<Registration> user = proxy.getRegisteredUser(login);
+			Registration registration = user.getBody();
+			if(registration==null) {
+				return new ResponseEntity("User is not registered",HttpStatus.UNAUTHORIZED);
 			}
+			if(!registration.getRole().equalsIgnoreCase("ADMIN")) {
+				return new ResponseEntity("User is not authorized",HttpStatus.UNAUTHORIZED);
+			}
+			BusRoute busRoute = searchService.addRoute(addNewRoute.getBusRoute());
+			return new ResponseEntity<BusRoute>(busRoute, HttpStatus.OK);
 		}catch (Exception e) {
-			return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
+			return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
 		}
 	}
 	

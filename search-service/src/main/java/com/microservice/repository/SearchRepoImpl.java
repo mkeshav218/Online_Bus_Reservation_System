@@ -108,7 +108,7 @@ public class SearchRepoImpl implements SearchRepo {
 	public BusDetails updateBusDetails(BusDetails busDetails) {
 		busType = getBusInfo(busDetails.getBusInfo().getBusName());
 		if(busType == null) {
-			throw new BusServiceException("Bus Info is not found hence cannot update bus-details");
+			throw new BusServiceException("Bus Info not found hence cannot update bus-details");
 		}else {
 			return entityManager.merge(busDetails);
 		}
@@ -128,21 +128,13 @@ public class SearchRepoImpl implements SearchRepo {
 	}
 
 	@Override
-	public int addRoute(BusRoute newRoute) {
-		try {
-			busDetails = getBus(newRoute.getNewBusDetails().getRouteNo());
-			if(busDetails == null) {
-				addBusDetails(newRoute.getNewBusDetails());
-			}
-			busRoute = getRouteDetails(newRoute.getPathNo());
-			if(busRoute == null) {
-				entityManager.merge(newRoute);// .persist(newRoute); 
-				return 1;
-			}else {
-				return 0;
-			}
-		} catch (Exception e) {
-			return 0;
+	public BusRoute addRoute(BusRoute newRoute) {
+		busDetails = getBus(newRoute.getNewBusDetails().getRouteNo());
+		if(busDetails == null) {
+			throw new BusServiceException("Bus Details not found hence cannot update bus-route");
+		}else {
+			entityManager.persist(newRoute);
+			return newRoute;
 		}
 	}
 
