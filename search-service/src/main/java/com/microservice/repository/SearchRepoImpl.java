@@ -140,9 +140,7 @@ public class SearchRepoImpl implements SearchRepo {
 
 	@Override
 	public void deleteRoute(int pathNo) {
-		System.out.println("Removing route no --->>>> " + pathNo);
 		busRoute = getRouteDetails(pathNo);
-		System.out.println("Removing route --->>>> " + busRoute.toString());
 		entityManager.remove(busRoute);
 	}
 

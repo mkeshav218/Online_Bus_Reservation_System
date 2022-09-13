@@ -121,8 +121,6 @@ public class SearchServiceImpl implements SearchService{
 		try {
 			return searchRepo.addRoute(newRoute);
 		} catch (Exception e) {
-			System.out.println(e.getClass());
-			System.out.println(e.getClass().getName());
 			if(e.getClass().getName().equalsIgnoreCase("org.springframework.dao.DataIntegrityViolationException")) {
 				throw new BusServiceException("Bus Route already exists");
 			}

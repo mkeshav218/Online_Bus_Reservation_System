@@ -253,9 +253,18 @@ public class SearchController {
 	}
 	
 	@DeleteMapping("/delete/busroute")
-	public ResponseEntity<String> removeBusRoute(@RequestBody GetDeleteBusRoute deleteBusRoute){
+	public ResponseEntity<String> removeBusRoute(@RequestBody BusRouteDto deleteBusRoute){
 		try {
-			int res = searchService.deleteRoute(deleteBusRoute.getPathNo());
+			Login login = deleteBusRoute.getLogin();
+			ResponseEntity<Registration> user = proxy.getRegisteredUser(login);
+			Registration registration = user.getBody();
+			if(registration==null) {
+				return new ResponseEntity("User is not registered",HttpStatus.UNAUTHORIZED);
+			}
+			if(!registration.getRole().equalsIgnoreCase("ADMIN")) {
+				return new ResponseEntity("User is not authorized",HttpStatus.UNAUTHORIZED);
+			}
+			int res = searchService.deleteRoute(deleteBusRoute.getBusRoute().getPathNo());
 			if(res == 1) {
 				return new ResponseEntity<String>("Bus Route removed successfully", HttpStatus.OK);
 			}else {

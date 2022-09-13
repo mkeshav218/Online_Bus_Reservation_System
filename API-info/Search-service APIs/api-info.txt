@@ -132,3 +132,53 @@ API-Details :-
     				"password":"admin"
 				}
 		     } 
+		
+11) Add Bus Route
+	API Type :- POST
+	URL :- http://localhost:8765/search-service/add/busroute
+	Input JSON :- {
+			"login":{
+    				"email":"admin@gmail.com",
+    				"password":"admin"
+				},
+			"busRoute":{
+				"pathNo":15,
+                		"busNo":103,
+                		"source":"delhi",
+                		"destination":"patna",
+                		"distance":1200,
+                		"startTime":"05:00",
+                		"reachTime":"17:00",
+                		"fare":2000,
+    				"newBusDetails":{
+                   			"routeNo":5
+                			}
+				}
+		     }
+		     
+12) Remove Bus Route
+	API Type :- DELETE
+	URL :- http://localhost:8765/search-service/delete/busroute
+		Input JSON :- {
+			"login":{
+    				"email":"admin@gmail.com",
+    				"password":"admin"
+				},
+			"busRoute":{
+				"pathNo":15
+				}
+		     }
+	
+13) Search Bus-Info
+	API Type :- GET
+	URL :- http://localhost:8765/search-service/searchbus
+	Input JSON :- {
+    			"src":"Dombivli",
+    			"dest":"Navi Mumbai",
+    			"fromTime":"01:00",
+    			"toTime":"23:00",
+    			"typeOfUser":"authorized"
+		      }     
+		    	
+
+		     	     
