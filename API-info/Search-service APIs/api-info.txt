@@ -180,7 +180,7 @@ API-Details :-
 		      }     
 		    	
 14) Get BusRoute based on PathNo
-	API Type :- GET
+	API Type :- POST
 	URL :- http://localhost:8765/search-service/getBusroute
 	Input JSON :-  {
 			"login":{

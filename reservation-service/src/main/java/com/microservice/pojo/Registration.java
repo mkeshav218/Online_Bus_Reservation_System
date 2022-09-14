@@ -1,17 +1,19 @@
-package com.microservice.dto1;
+package com.microservice.pojo;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 
 public class Registration {
-	private String email;
-	private String firstName;
-	private String lastName;
-	private String password;
-	private String phone;
-	private Date dateOfBirth;
-	private String gender;
-	private int noOfBookedTicket;
+	private String email;	
+	private String firstName;	
+	private String lastName;	
+	private String password;	
+	private String phone;	
+	private LocalDate dateOfBirth;	
+	private String gender;	
+	private int noOfBookedTicket;	
 	private double wallet;
+	private String role;
 
 	public Registration() {
 		super();
@@ -57,11 +59,11 @@ public class Registration {
 		this.phone = phone;
 	}
 
-	public Date getDateOfBirth() {
+	public LocalDate getDateOfBirth() {
 		return dateOfBirth;
 	}
 
-	public void setDateOfBirth(Date dateOfBirth) {
+	public void setDateOfBirth(LocalDate dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
 
@@ -89,4 +91,19 @@ public class Registration {
 		this.wallet = wallet;
 	}
 
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	@Override
+	public String toString() {
+		return "Registration [email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + ", password="
+				+ password + ", phone=" + phone + ", dateOfBirth=" + dateOfBirth + ", gender=" + gender
+				+ ", noOfBookedTicket=" + noOfBookedTicket + ", wallet=" + wallet + ", role=" + role + "]";
+	}
+	
 }

@@ -18,7 +18,6 @@ import com.microservice.dto.BusDetailsDto;
 import com.microservice.dto.BusInfoDto;
 import com.microservice.dto.BusRouteDto;
 import com.microservice.dto.GetBusRoute;
-import com.microservice.dto.GetDeleteBusRoute;
 import com.microservice.dto.SearchBus;
 import com.microservice.entity.BusDetails;
 import com.microservice.entity.BusInfo;
@@ -283,7 +282,7 @@ public class SearchController {
 		}
 	}
 	
-	@GetMapping("/getBusroute")
+	@PostMapping("/getBusroute")
 	public ResponseEntity<BusRoute> getBus(@RequestBody BusRouteDto getBusRoute){
 		try {
 			Login login = getBusRoute.getLogin();
@@ -291,9 +290,6 @@ public class SearchController {
 			Registration registration = user.getBody();
 			if(registration==null) {
 				return new ResponseEntity("User is not registered",HttpStatus.UNAUTHORIZED);
-			}
-			if(!registration.getRole().equalsIgnoreCase("ADMIN")) {
-				return new ResponseEntity("User is not authorized",HttpStatus.UNAUTHORIZED);
 			}
 			return new ResponseEntity<BusRoute>(searchService.getRouteDetails(getBusRoute.getBusRoute().getPathNo()), HttpStatus.OK);
 		}catch (Exception e) {

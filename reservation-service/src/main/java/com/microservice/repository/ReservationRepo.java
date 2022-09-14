@@ -7,7 +7,7 @@ import com.microservice.entity.Reservation;
 
 public interface ReservationRepo {
 	
-	public void addReservation(Reservation obj);
+	public Reservation addReservation(Reservation obj);
 	public void cancelReservation(int ticketNo, LocalDate cancelDate, double refundAmt);
 	public Reservation getReservation(int ticketNo);
 

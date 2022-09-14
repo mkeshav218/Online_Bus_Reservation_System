@@ -2,6 +2,8 @@ package com.microservice.dto1;
 
 import java.util.Set;
 
+import com.microservice.pojo.BusRoute;
+
 public class BusDetails {
 	
 	private int routeNo;

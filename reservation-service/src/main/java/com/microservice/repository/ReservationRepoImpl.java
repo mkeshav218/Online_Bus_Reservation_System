@@ -22,18 +22,16 @@ public class ReservationRepoImpl implements ReservationRepo {
 	EntityManager entityManager;
 
 	@Override
-	public void addReservation(Reservation obj) {
-		try {
-			entityManager.persist(obj);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public Reservation addReservation(Reservation obj) {
+		obj.setTicketStatus("BOOKED");
+		entityManager.persist(obj);
+		return obj;
 	}
  
 	@Override
 	public void cancelReservation(int ticketNo,LocalDate cancelDate, double refundAmt) {
 		Reservation resObj = getReservation(ticketNo);
-		resObj.setTicketStatus("cancelled");
+		resObj.setTicketStatus("CANCEL");
 		resObj.setCancellationDate(cancelDate);
 		resObj.setRefundAmount(refundAmt);
 		entityManager.merge(resObj);

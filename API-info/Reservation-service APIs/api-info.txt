@@ -1,0 +1,32 @@
+API-Details :-
+
+1) Add Reservation (Book Ticket)
+	API Type :- POST
+	URL :- http://localhost:8765/reservation-service/add/reservation
+	Input JSON:- {
+			"login":{
+    				"email":"admin@gmail.com",
+    				"password":"admin"
+				},
+			"reservationInfo":{
+    				"bookingDate":"2022-09-13",
+    				"dateOfJourney":"2022-09-20",
+    				"seatNo":5,
+                    		"pathNo":"11",
+                    		"email":"admin@gmail.com"
+				}
+		     }
+		     
+2) Cancel Reservation (Cancel Ticket)
+	API Type :- PUT
+	URL :- http://localhost:8765/reservation-service/cancelticket
+	Input JSON:- {
+			"login":{
+    				"email":"admin@gmail.com",
+    				"password":"admin"
+				},
+			"reservationInfo":{
+                    			"ticketNo":3
+				}
+		     }
+		     

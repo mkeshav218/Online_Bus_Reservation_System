@@ -1,28 +1,17 @@
-package com.microservice.dto1;
+package com.microservice.pojo;
 
 public class BusRoute {
 
 	private int pathNo;
-
 	private int busNo;
-
 	private String source;
-
 	private String destination;
-
 	private int distance;
-
 	private String startTime;
-
 	private String reachTime;
-	
 	private int fare;
-
 	private BusDetails newBusDetails;
-	
-	 
-//	@OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL) 
-//	private Set<Reservation> newReservations;
+
 	
 	public BusRoute() {
 		super();
@@ -125,14 +114,5 @@ public class BusRoute {
 				+ ", distance=" + distance + ", startTime=" + startTime + ", reachTime=" + reachTime + ", fare=" + fare
 				+ ", newBusDetails=" + newBusDetails + "]";
 	}
-	
-	
 
-//	public Set<Reservation> getNewReservations() {
-//		return newReservations;
-//	}
-//
-//	public void setNewReservations(Set<Reservation> newReservations) {
-//		this.newReservations = newReservations;
-//	}
 }

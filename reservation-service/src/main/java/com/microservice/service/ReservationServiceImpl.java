@@ -17,11 +17,11 @@ public class ReservationServiceImpl implements ReservationService {
 	ReservationRepo repo;
 
 	@Override
-	public void addReservation(Reservation obj) {
+	public Reservation addReservation(Reservation obj) {
 		try {
-			repo.addReservation(obj);
+			return repo.addReservation(obj);
 		} catch (Exception e) {
-			throw new BusServiceException("Ticket cannot be booked!!");
+			throw new BusServiceException(e.getMessage());
 		}
 	}
 
@@ -29,7 +29,7 @@ public class ReservationServiceImpl implements ReservationService {
 	public void cancelReservation(int ticketNo, LocalDate cancelDate, double refundAmt) {
 		try {
 			Reservation reservation = repo.getReservation(ticketNo);
-			if(reservation.getTicketStatus().equals("cancelled")){
+			if(reservation.getTicketStatus().equals("CANCEL")){
 				throw new BusServiceException("Ticket already cancelled...!!");
 			}
 			if(reservation.getDateOfJourney().compareTo(cancelDate)>0) {
