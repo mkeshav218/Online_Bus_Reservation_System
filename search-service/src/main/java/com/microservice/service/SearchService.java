@@ -26,8 +26,8 @@ public interface SearchService {
 	public BusRoute addRoute(BusRoute newRoute); 
 	public int deleteRoute(int pathNo);  
 	public List<String[]> searchBus(String src, String dest, String fromTime, String toTime, String typeOfUser);  //return list of bus_Details
-	public BusRoute getRouteDetails(int busNo, String source, String destination);
+	public List<BusRoute> getRouteDetails(String source, String destination);
 	public BusRoute getRouteDetails(int pathNo); 
-	public int updateBusRoute(BusRoute busRoute); 
+	public BusRoute updateBusRoute(BusRoute busRoute); 
 	public List<BusRoute> getAllBusRoute();  
 }

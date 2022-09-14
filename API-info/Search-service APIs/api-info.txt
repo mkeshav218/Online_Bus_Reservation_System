@@ -180,5 +180,56 @@ API-Details :-
     			"typeOfUser":"authorized"
 		      }     
 		    	
+14) Get BusRoute based on PathNo
+	API Type :- GET
+	URL :- http://localhost:8765/search-service/getBusroute
+	Input JSON :-  {
+			"login":{
+    				"email":"admin@gmail.com",
+    				"password":"admin"
+				},
+			"busRoute":{
+				"pathNo":5
+				}
+		     }
 
-		     	     
+15) Get All BusRoute between a given source & destination
+	API Type :- GET
+	URL :- http://localhost:8765/search-service/getBusroute
+	Input JSON :-  {
+    				"source":"Dombivli",
+    				"destination":"Navi Mumbai"
+			}
+
+16) Update Bus-Route
+	API Type :- PUT
+	URL :- http://localhost:8765/search-service/update/busroute
+	Input JSON:- {
+			"login":{
+    				"email":"admin@gmail.com",
+    				"password":"admin"
+				},
+			"busRoute":{
+				"pathNo":15,
+                		"busNo":103,
+                		"source":"new-delhi",
+                		"destination":"patna",
+                		"distance":1200,
+                		"startTime":"05:00",
+                		"reachTime":"17:00",
+                		"fare":2000,
+    				"newBusDetails":{
+                   			"routeNo":5
+                			}
+				}
+		     }
+
+17) Get All BusRoute
+	API Type :- PUT
+	URL :- http://localhost:8765/search-service/getallbusroute
+	Input JSON:- {
+			"login":{
+    				"email":"admin@gmail.com",
+    				"password":"admin"
+				}
+		     }	

@@ -197,9 +197,9 @@ public class SearchServiceImpl implements SearchService{
 	}
 	
 	@Override
-	public BusRoute getRouteDetails(int busNo, String source, String destination) {
+	public List<BusRoute> getRouteDetails(String source, String destination) {
 		try {
-			return searchRepo.getRouteDetails(busNo, source, destination);
+			return searchRepo.getRouteDetails(source, destination);
 		}catch (Exception e) {
 			throw new BusServiceException("Bus-Route details not found...!!");
 		}
@@ -215,12 +215,11 @@ public class SearchServiceImpl implements SearchService{
 	}
 
 	@Override
-	public int updateBusRoute(BusRoute busRoute) {
+	public BusRoute updateBusRoute(BusRoute busRoute) {
 		try {
-			searchRepo.updateBusRoute(busRoute);
-			return 1;
+			return searchRepo.updateBusRoute(busRoute);
 		} catch (Exception e) {
-			throw new BusServiceException("Cannot update bus route");
+			throw new BusServiceException(e.getMessage());
 		}
 	}
 	

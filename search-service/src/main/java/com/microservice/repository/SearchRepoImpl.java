@@ -178,22 +178,22 @@ public class SearchRepoImpl implements SearchRepo {
 	}
 	
 	@Override
-	public BusRoute getRouteDetails(int busNo, String source, String destination) {
-		String hql = "FROM BusRoute R where R.source =: src and R.destination=:dest and R.busNo =: busNo";
+	public List<BusRoute> getRouteDetails(String source, String destination) {
+		String hql = "FROM BusRoute R where R.source =: src and R.destination=:dest";
 		Query query = entityManager.createQuery(hql);
 		query.setParameter("src",source);
 		query.setParameter("dest", destination);	
-		query.setParameter("busNo", busNo);
-		return (BusRoute)query.getSingleResult();
+		return (List<BusRoute>)query.getResultList();
 	}
 
 	@Override
-	public void updateBusRoute(BusRoute busRoute) {
+	public BusRoute updateBusRoute(BusRoute busRoute) {
 		busDetails = getBus(busRoute.getNewBusDetails().getRouteNo());
 		if(busDetails == null) {
-			addBusDetails(busDetails);
+			throw new BusServiceException("Bus Details not found hence cannot update bus-route");
+		}else {
+			return entityManager.merge(busRoute);
 		}
-		entityManager.merge(busRoute);
 	}
 	
 	@Override

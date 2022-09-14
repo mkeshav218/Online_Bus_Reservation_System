@@ -4,17 +4,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class GetBusRoute {
-	int busNo;
 	String source;
 	String destination;
 	public GetBusRoute() {
 		super();
-	}
-	public int getBusNo() {
-		return busNo;
-	}
-	public void setBusNo(int busNo) {
-		this.busNo = busNo;
 	}
 	public String getSource() {
 		return source;

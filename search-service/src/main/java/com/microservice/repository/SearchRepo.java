@@ -27,8 +27,8 @@ public interface SearchRepo {
 	public void deleteRoute(int pathNo);
 	public List<String[]> searchBus(String src, String dest);  //return list of bus_Details
 	public BusRoute getRouteDetails(int pathNo);
-	public BusRoute getRouteDetails(int busNo, String source, String destination);
-	public void updateBusRoute(BusRoute busRoute);
+	public List<BusRoute> getRouteDetails(String source, String destination);
+	public BusRoute updateBusRoute(BusRoute busRoute);
 	public List<BusRoute> getAllBusRoute();
 
 }
