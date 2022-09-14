@@ -139,7 +139,7 @@ public class SearchServiceImpl implements SearchService{
 	}
 
 	@Override
-	public List<String[]> searchBus(String src, String dest, String fromTime, String toTime, String typeOfUser) {
+	public List<String[]> searchBus(String src, String dest, String fromTime, String toTime) {
 		try {
 			List<String[]> allBus = searchRepo.searchBus(src, dest);
 			List<String[]> allBuses = new ArrayList<String[]>();
@@ -163,23 +163,11 @@ public class SearchServiceImpl implements SearchService{
 					minbus += ((int)arrivalTime.charAt(i+3)-48)*Math.pow(10, k-i);  //3+10^2 + 0+10^1
 				}
 				if(hrbus>checkhr1 && hrbus<=checkhr2) {
-					if(typeOfUser.equals("unauthorized") && bus[10].equals("Driverless")) {
-						//(no need to add bus to the list);
-					}else if(typeOfUser.equals("unauthorized") && bus[10].equals("Driver")) {
-						allBuses.add(bus);
-					}else {
-						allBuses.add(bus);
-					}
+					allBuses.add(bus);
 					
 				}else if(hrbus==checkhr1) {
 					if(minbus>=checkmin1 && minbus<=checkmin2) {
-						if(typeOfUser.equals("unauthorized") && bus[10].equals("Driverless")) {
-							//(no need to add bus to the list);
-						}else if(typeOfUser.equals("unauthorized") && bus[10].equals("Driver")) {
-							allBuses.add(bus);
-						}else {
-							allBuses.add(bus);
-						}
+						allBuses.add(bus);
 					}else {
 						//remove bus from busList (no need to add bus to the list)
 					}

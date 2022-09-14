@@ -274,11 +274,10 @@ public class SearchController {
 			return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
 		}
 	}
-	//TODO::::::::::
 	@GetMapping("/searchbus")
 	public ResponseEntity<List<String[]>> searchBus(@RequestBody SearchBus searchBus){
 		try {
-			return new ResponseEntity<List<String[]>>(searchService.searchBus(searchBus.getSrc(), searchBus.getDest(), searchBus.getFromTime(), searchBus.getToTime(), searchBus.getTypeOfUser()), HttpStatus.OK);
+			return new ResponseEntity<List<String[]>>(searchService.searchBus(searchBus.getSrc(), searchBus.getDest(), searchBus.getFromTime(), searchBus.getToTime()), HttpStatus.OK);
 		}catch (Exception e) {
 			return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
 		}

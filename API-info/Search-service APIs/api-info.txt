@@ -176,8 +176,7 @@ API-Details :-
     			"src":"Dombivli",
     			"dest":"Navi Mumbai",
     			"fromTime":"01:00",
-    			"toTime":"23:00",
-    			"typeOfUser":"authorized"
+    			"toTime":"23:00"
 		      }     
 		    	
 14) Get BusRoute based on PathNo
