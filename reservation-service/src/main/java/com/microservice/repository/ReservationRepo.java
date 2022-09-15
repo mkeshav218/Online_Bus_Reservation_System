@@ -15,5 +15,5 @@ public interface ReservationRepo {
 	public int frequentTravelRoute(); // return most frequent pathNo
 	public HashMap<Integer, Integer> transactionBetweenDate(LocalDate date1, LocalDate date2);
 	public List<Reservation> particularDayReservationList(LocalDate date); //return all current day bookings
-	public List<String[]> availableSeats();
+	public List<Integer> getAvailableSeats(int pathNo,LocalDate doj);
 }

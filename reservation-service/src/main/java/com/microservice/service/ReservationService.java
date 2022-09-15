@@ -14,5 +14,5 @@ public interface ReservationService {
 	public int frequentTravelRoute(); // return pathNo
 	public HashMap<Integer, Integer> transactionBetweenDate(LocalDate date1,LocalDate date2);
 	public List<Reservation> particularDayReservationList(LocalDate date); //return all current day bookings
-	public List<Integer> availableSeats(int busNo, String doj,String src, String dest);
+	public List<Integer> getAvailableSeats(int pathNo,LocalDate doj);
 }

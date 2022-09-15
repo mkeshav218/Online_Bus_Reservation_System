@@ -12,6 +12,7 @@
 	<artifactId>reservation-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>reservation-service</name>
+	<packaging>jar</packaging>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

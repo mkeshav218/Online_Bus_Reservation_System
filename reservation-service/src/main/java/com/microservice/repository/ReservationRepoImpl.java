@@ -2,6 +2,7 @@ package com.microservice.repository;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -23,6 +24,8 @@ public class ReservationRepoImpl implements ReservationRepo {
 
 	@Override
 	public Reservation addReservation(Reservation obj) {
+		LocalDate now = LocalDate.now();
+		obj.setBookingDate(now);
 		obj.setTicketStatus("BOOKED");
 		entityManager.persist(obj);
 		return obj;
@@ -31,7 +34,7 @@ public class ReservationRepoImpl implements ReservationRepo {
 	@Override
 	public void cancelReservation(int ticketNo,LocalDate cancelDate, double refundAmt) {
 		Reservation resObj = getReservation(ticketNo);
-		resObj.setTicketStatus("CANCEL");
+		resObj.setTicketStatus("CANCELLED");
 		resObj.setCancellationDate(cancelDate);
 		resObj.setRefundAmount(refundAmt);
 		entityManager.merge(resObj);
@@ -98,11 +101,24 @@ public class ReservationRepoImpl implements ReservationRepo {
 		List<Reservation> res= query.getResultList();
 		return res;
 	}
-
+	
 	@Override
-	public List<String[]> availableSeats() {
-		
-		return null;
+	public List<Integer> getAvailableSeats(int pathNo,LocalDate doj){
+		String hql="SELECT r.seatNo from Reservation r where r.dateOfJourney=: dt AND r.pathNo =: pathNo AND r.ticketStatus =: status";
+		Query query=entityManager.createQuery(hql);
+		query.setParameter("dt", doj);
+		query.setParameter("pathNo", pathNo);
+		query.setParameter("status", "BOOKED");
+		List<Integer> res= query.getResultList();
+		List<Integer> result = new LinkedList<>();
+		for(int i=1;i<=25;i++) {
+			result.add(i);
+		}
+		for(int i:res) {
+			result.remove(result.indexOf(i));
+		}
+		return result;
 	}
+
 
 }

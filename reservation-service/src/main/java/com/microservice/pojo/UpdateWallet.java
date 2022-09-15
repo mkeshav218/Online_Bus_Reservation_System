@@ -28,5 +28,4 @@ public class UpdateWallet {
 		this.amount = amount;
 	}
 	
-	
 }

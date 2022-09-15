@@ -30,7 +30,7 @@ public class ReservationServiceImpl implements ReservationService {
 	public void cancelReservation(int ticketNo, LocalDate cancelDate, double refundAmt) {
 		try {
 			Reservation reservation = repo.getReservation(ticketNo);
-			if(reservation.getTicketStatus().equals("CANCEL")){
+			if(reservation.getTicketStatus().equals("CANCELLED")){
 				throw new BusServiceException("Ticket already cancelled...!!");
 			}
 			if(reservation.getDateOfJourney().compareTo(cancelDate)>0) {
@@ -80,9 +80,12 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 
 	@Override
-	public List<Integer> availableSeats(int busNo, String doj, String src, String dest) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Integer> getAvailableSeats(int pathNo,LocalDate doj){
+		try {
+			return repo.getAvailableSeats(pathNo, doj);
+		}catch (Exception e) {
+			throw new BusServiceException(e.getMessage());
+		}
 	}
 
 

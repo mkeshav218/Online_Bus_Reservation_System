@@ -9,7 +9,6 @@ API-Details :-
     				"password":"admin"
 				},
 			"reservationInfo":{
-    				"bookingDate":"2022-09-13",
     				"dateOfJourney":"2022-09-20",
     				"seatNo":5,
                     		"pathNo":"11",
@@ -75,4 +74,27 @@ API-Details :-
                 	"date":{
                     		"date":"2022-09-13"
                 		}
+		     }
+
+7) Get Ticket Details based on Ticket-No
+	API Type :- GET
+	URL :- http://localhost:8765/reservation-service/get-ticket-details
+	Input JSON :- {
+			"login":{
+    				"email":"admin@gmail.com",
+    				"password":"admin"
+				},
+			"reservationInfo":{
+                    		"ticketNo":1
+				}
+		     }
+
+8) Get Available Seat
+	API Type :- GET
+	URL :- http://localhost:8765/reservation-service/get/availableseats
+	Input JSON :- {
+			"reservationInfo":{
+                    		"pathNo":"1",
+                    		"dateOfJourney":"2022-09-20"
+				}
 		     }

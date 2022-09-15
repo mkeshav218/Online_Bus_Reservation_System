@@ -19,6 +19,7 @@ import com.microservice.ServiceProxy;
 import com.microservice.dto.BusRouteDto;
 import com.microservice.dto.ParticularDateReservationDto;
 import com.microservice.dto.ReservationDto;
+import com.microservice.dto.TicketDetails;
 import com.microservice.dto.TransactionBetweenDateDto;
 import com.microservice.entity.Reservation;
 import com.microservice.pojo.BusDetails;
@@ -220,45 +221,47 @@ public class ReservationController {
 		}
 	}
 	
-//	@GetMapping("/get/weeklyBooked")
-//	public ResponseEntity<List<Reservation>> weeklyBooked(@RequestBody ProfitByMonth bookedByMonth) {
-//		try {
-//			List<Reservation> reservations = reservationService.weeklyBooked(bookedByMonth.getDate1(),bookedByMonth.getDate2());
-//			return new ResponseEntity<List<Reservation>>(reservations,HttpStatus.OK);
-//		}catch (Exception e) {
-//			return new ResponseEntity(e.getMessage(),HttpStatus.OK);
-//		}
-//	}
-//	
-//	//todo:api for available seats
-//	@GetMapping("/get-ticket-details")
-//	public ResponseEntity<TicketDetails> getTicketDetails(@RequestBody CancelDto getTicketInfo){
-//		try {
-//			reservation = reservationService.getReservation(getTicketInfo.getTicketNo());
-//			GetDeleteBusRoute getBusRoute = new GetDeleteBusRoute();
-//			getBusRoute.setPathNo(reservation.getPathNo());
-//			ResponseEntity<BusRoute> response  = proxy.getBus(getBusRoute);
-//			TicketDetails ticketDetails = new TicketDetails();
-//
-//			ticketDetails.setTicketNo(reservation.getTicketNo());
-//			ticketDetails.setSeatNo(reservation.getSeatNo());
-//			ticketDetails.setSource(response.getBody().getSource());
-//			ticketDetails.setDestination(response.getBody().getDestination());
-//			ticketDetails.setDoj(reservation.getDateOfJourney());
-//			ticketDetails.setBookingDate(reservation.getBookingDate());
-//			ticketDetails.setEmail(reservation.getEmail());
-//			ticketDetails.setFare(response.getBody().getFare());
-//			ticketDetails.setBusName(response.getBody().getNewBusDetails().getNewBusName().getBusName());
-//			ticketDetails.setBusNo(response.getBody().getBusNo());
-//			ticketDetails.setStartTime(response.getBody().getStartTime());
-//			ticketDetails.setReachTime(response.getBody().getReachTime());
-//			ticketDetails.setBusType(response.getBody().getNewBusDetails().getNewBusName().getBusType());
-//			
-//			return new ResponseEntity<TicketDetails>(ticketDetails, HttpStatus.OK);
-//		}catch (Exception e) {
-//			return new ResponseEntity(e.getMessage(),HttpStatus.OK);
-//		}
-//	}
+	@GetMapping("/get-ticket-details")
+	public ResponseEntity<TicketDetails> getTicketDetails(@RequestBody ReservationDto getTicketInfo){
+		try {
+			reservation = reservationService.getReservation(getTicketInfo.getReservationInfo().getTicketNo());
+			BusRoute busRoute = new BusRoute();
+			busRoute.setPathNo(reservation.getPathNo());
+			BusRouteDto busRouteDto = new BusRouteDto();
+			busRouteDto.setLogin(getTicketInfo.getLogin());
+			busRouteDto.setBusRoute(busRoute);
+			ResponseEntity<BusRoute> busRouteEntity = proxy.getBus(busRouteDto);
+			BusRoute busRoute2 = busRouteEntity.getBody();
+			TicketDetails ticketDetails = new TicketDetails();
+
+			ticketDetails.setTicketNo(reservation.getTicketNo());
+			ticketDetails.setSeatNo(reservation.getSeatNo());
+			ticketDetails.setSource(busRoute2.getSource());
+			ticketDetails.setDestination(busRoute2.getDestination());
+			ticketDetails.setDoj(reservation.getDateOfJourney());
+			ticketDetails.setBookingDate(reservation.getBookingDate());
+			ticketDetails.setEmail(reservation.getEmail());
+			ticketDetails.setFare(busRoute2.getFare());
+			ticketDetails.setBusName(busRoute2.getNewBusDetails().getBusInfo().getBusName());
+			ticketDetails.setBusNo(busRoute2.getBusNo());
+			ticketDetails.setStartTime(busRoute2.getStartTime());
+			ticketDetails.setReachTime(busRoute2.getReachTime());
+			ticketDetails.setBusType(busRoute2.getNewBusDetails().getBusInfo().getBusType());
+			return new ResponseEntity<TicketDetails>(ticketDetails, HttpStatus.OK);
+		}catch (Exception e) {
+			return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
+		}
+	}
 		
+	
+	@GetMapping("/get/availableseats")
+	public ResponseEntity<List<Integer>> getavailableseats(@RequestBody ReservationDto reservationDto){
+		try {
+			List<Integer> availableSeats = reservationService.getAvailableSeats(reservationDto.getReservationInfo().getPathNo(), reservationDto.getReservationInfo().getDateOfJourney());
+			return new ResponseEntity<List<Integer>>(availableSeats, HttpStatus.OK);
+		}catch (Exception e) {
+			return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
+		}
+	}
 
 }
