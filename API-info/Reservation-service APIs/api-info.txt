@@ -30,3 +30,49 @@ API-Details :-
 				}
 		     }
 		     
+3) Get Frequent Route
+	API Type :- GET
+	URL :- http://localhost:8765/reservation-service/get/frequentroute
+	Input JSON :- {
+			"login":{
+    				"email":"admin@gmail.com",
+    				"password":"admin"
+				}
+		     }
+
+4) Get Most Travelled Bus-Details
+	API Type :- GET
+	URL :- http://localhost:8765/reservation-service/get/mostprefferedbus
+	Input JSON :- {
+			"login":{
+    				"email":"admin@gmail.com",
+    				"password":"admin"
+				}
+		     }
+
+5) Get Transaction Between Date 
+	API Type :- GET
+	URL :- http://localhost:8765/reservation-service/get/transactionBetweenDate
+	Input JSON :- {
+			"login":{
+    				"email":"admin@gmail.com",
+    				"password":"admin"
+				},
+                	"transactionBetweenDate":{
+                    		"date1":"2022-01-01",
+                    		"date2":"2023-01-01"
+                	}
+		     }
+
+6) Get Particular-Date Reservation-List
+	API Type :- GET
+	URL :- http://localhost:8765/reservation-service/get/particularDayReservation
+	Input JSON :- {
+			"login":{
+    				"email":"admin@gmail.com",
+    				"password":"admin"
+				},
+                	"date":{
+                    		"date":"2022-09-13"
+                		}
+		     }

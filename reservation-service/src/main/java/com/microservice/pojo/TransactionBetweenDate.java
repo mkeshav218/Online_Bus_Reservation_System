@@ -1,11 +1,11 @@
-package com.microservice.dto;
+package com.microservice.pojo;
 
 import java.time.LocalDate;
 
-public class ProfitByMonth {
+public class TransactionBetweenDate {
 	LocalDate date1;
 	LocalDate date2;
-	public ProfitByMonth() {
+	public TransactionBetweenDate() {
 		super();
 	}
 	public LocalDate getDate1() {
@@ -20,6 +20,8 @@ public class ProfitByMonth {
 	public void setDate2(LocalDate date2) {
 		this.date2 = date2;
 	}
-	
-	
+	@Override
+	public String toString() {
+		return "TransactionBetweenDate [date1=" + date1 + ", date2=" + date2 + "]";
+	}
 }

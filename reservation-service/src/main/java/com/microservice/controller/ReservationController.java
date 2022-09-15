@@ -1,11 +1,15 @@
 package com.microservice.controller;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,11 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.microservice.ServiceProxy;
 import com.microservice.dto.BusRouteDto;
+import com.microservice.dto.ParticularDateReservationDto;
 import com.microservice.dto.ReservationDto;
-import com.microservice.dto1.Deposit;
-import com.microservice.dto1.GetBusRoute;
-import com.microservice.dto1.GetDeleteBusRoute;
+import com.microservice.dto.TransactionBetweenDateDto;
 import com.microservice.entity.Reservation;
+import com.microservice.pojo.BusDetails;
 import com.microservice.pojo.BusRoute;
 import com.microservice.pojo.Login;
 import com.microservice.pojo.Registration;
@@ -35,16 +39,7 @@ public class ReservationController {
 	ReservationService reservationService;
 	
 	@Autowired
-	GetDeleteBusRoute getBusRoute;
-	
-	@Autowired
-	GetBusRoute getRoute;
-	
-	@Autowired
 	Reservation reservation;
-	
-	@Autowired
-	Deposit deposit;
 	
 	@PostMapping("/add/reservation")
 	public ResponseEntity<Reservation> addReservation(@RequestBody ReservationDto reservationDto){
@@ -55,7 +50,6 @@ public class ReservationController {
 			if(registration==null) {
 				return new ResponseEntity("User is not registered",HttpStatus.BAD_REQUEST);
 			}
-			System.out.println(registration);
 
 			BusRoute busRoute = new BusRoute();
 			busRoute.setPathNo(reservationDto.getReservationInfo().getPathNo());
@@ -110,70 +104,122 @@ public class ReservationController {
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
-//	
-//	@GetMapping("/get/frequentroute")
-//	public ResponseEntity<BusRoute> getMostFrequestRoute() {
-//		
-//		try {
-//			GetDeleteBusRoute getBusRoute = new GetDeleteBusRoute();
-//			int frequentRoute = reservationService.frequentTravelRoute();
-//			getBusRoute.setPathNo(frequentRoute);
-//			ResponseEntity<BusRoute> response  = proxy.getBus(getBusRoute);
-//			if(response.getBody()!=null) {
-//				return response;
-//			}else {
-//				return new ResponseEntity("No Reservation done till yet...!!",HttpStatus.OK);
-//			}
-//		} catch (Exception e) {
-//			return new ResponseEntity(e.getMessage(),HttpStatus.OK);
-//		}
-//	} 
-//	
-//	
-//	@GetMapping("/get/lastmonthprofit")
-//	public ResponseEntity<Double> getLastMonthProfit(@RequestBody ProfitByMonth profitByMonth){
-//		try {
-//			List<Integer> routes = reservationService.lastMonthProfit(profitByMonth.getDate1(),profitByMonth.getDate2());
-//			Double amount = 0.0;
-//			GetDeleteBusRoute getBusRoute = new GetDeleteBusRoute();
-//			for(int route:routes) {
-//				getBusRoute.setPathNo(route);
-//				amount += proxy.getBus(getBusRoute).getBody().getFare();
-//			}
-//			return new ResponseEntity<Double>(amount,HttpStatus.OK);
-//		}catch (Exception e) {
-//			return new ResponseEntity(e.getMessage(),HttpStatus.OK);
-//		}
-//	}
-//	
-//	@GetMapping("/get/mostprefferedbus")
-//	public ResponseEntity<String> getMostPrefferedBus() {
-//		
-//		try {
-//			GetDeleteBusRoute getBusRoute = new GetDeleteBusRoute();
-//			int frequentRoute = reservationService.mostPreferredBus();
-//			getBusRoute.setPathNo(frequentRoute);
-//			ResponseEntity<BusRoute> response  = proxy.getBus(getBusRoute);
-//			if(response.getBody()!=null) {
-//				return new ResponseEntity<String>(response.getBody().getNewBusDetails().getNewBusName().getBusName(), HttpStatus.OK);
-//			}else {
-//				return new ResponseEntity<String>("No Reservation done till yet...!!",HttpStatus.OK);
-//			}
-//		} catch (Exception e) {
-//			return new ResponseEntity<String>(e.getMessage(),HttpStatus.OK);
-//		}
-//	}
-//	
-//	@GetMapping("/get/dailyBooked")
-//	public ResponseEntity<List<Reservation>> dailyBooked(@RequestBody DailyBooked dailyBooked){
-//		try {
-//			List<Reservation> reservations = reservationService.dailyBooked(dailyBooked.getDate());
-//			return new ResponseEntity<List<Reservation>>(reservations,HttpStatus.OK);
-//		}catch (Exception e) {
-//			return new ResponseEntity(e.getMessage(),HttpStatus.OK);
-//		}
-//	}
-//	
+	
+	@GetMapping("/get/frequentroute")
+	public ResponseEntity<BusRoute> getMostFrequestRoute(@RequestBody ReservationDto reservationDto) {
+		
+		try {
+			Login login = reservationDto.getLogin();
+			ResponseEntity<Registration> user = proxy.getRegisteredUser(login);
+			Registration registration = user.getBody();
+			if(registration==null) {
+				return new ResponseEntity("User is not registered",HttpStatus.UNAUTHORIZED);
+			}
+			if(!registration.getRole().equalsIgnoreCase("ADMIN")) {
+				return new ResponseEntity("User is not authorized",HttpStatus.UNAUTHORIZED);
+			}
+			int frequentRoute = reservationService.frequentTravelRoute();
+
+			BusRoute busRoute = new BusRoute();
+			busRoute.setPathNo(frequentRoute);
+			BusRouteDto busRouteDto = new BusRouteDto();
+			busRouteDto.setLogin(reservationDto.getLogin());
+			busRouteDto.setBusRoute(busRoute);
+			ResponseEntity<BusRoute> busRouteEntity = proxy.getBus(busRouteDto);
+			BusRoute busRoute2 = busRouteEntity.getBody();
+			if(busRoute2!=null) {
+				return new ResponseEntity<BusRoute>(busRoute2,HttpStatus.OK);
+			}else {
+				return new ResponseEntity("No Reservation done till yet...!!",HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
+		}
+	} 
+	
+	
+	@GetMapping("/get/transactionBetweenDate")
+	public ResponseEntity<Double> gettransactionBetweenDate(@RequestBody TransactionBetweenDateDto transactionBetweenDateDto){
+		try {
+			Login login = transactionBetweenDateDto.getLogin();
+			ResponseEntity<Registration> user = proxy.getRegisteredUser(login);
+			Registration registration = user.getBody();
+			if(registration==null) {
+				return new ResponseEntity("User is not registered",HttpStatus.UNAUTHORIZED);
+			}
+			if(!registration.getRole().equalsIgnoreCase("ADMIN")) {
+				return new ResponseEntity("User is not authorized",HttpStatus.UNAUTHORIZED);
+			}
+			HashMap<Integer, Integer> routes = reservationService.transactionBetweenDate(transactionBetweenDateDto.getTransactionBetweenDate().getDate1(),transactionBetweenDateDto.getTransactionBetweenDate().getDate2());
+			Double amount = 0.0;
+			Set<Integer> keySet = routes.keySet();
+			for(int route:keySet) {
+				BusRoute busRoute = new BusRoute();
+				busRoute.setPathNo(route);
+				BusRouteDto busRouteDto = new BusRouteDto();
+				busRouteDto.setLogin(transactionBetweenDateDto.getLogin());
+				busRouteDto.setBusRoute(busRoute);
+				ResponseEntity<BusRoute> busRouteEntity = proxy.getBus(busRouteDto);
+				BusRoute busRoute2 = busRouteEntity.getBody();
+				amount += (busRoute2.getFare()*routes.get(route));
+			}
+			return new ResponseEntity<Double>(amount,HttpStatus.OK);
+		}catch (Exception e) {
+			return new ResponseEntity(e.getMessage(),HttpStatus.OK);
+		}
+	}
+	
+	@GetMapping("/get/mostprefferedbus")
+	public ResponseEntity<BusDetails> getMostPrefferedBus(@RequestBody ReservationDto reservationDto) {
+		
+		try {
+			Login login = reservationDto.getLogin();
+			ResponseEntity<Registration> user = proxy.getRegisteredUser(login);
+			Registration registration = user.getBody();
+			if(registration==null) {
+				return new ResponseEntity("User is not registered",HttpStatus.UNAUTHORIZED);
+			}
+			if(!registration.getRole().equalsIgnoreCase("ADMIN")) {
+				return new ResponseEntity("User is not authorized",HttpStatus.UNAUTHORIZED);
+			}
+			int frequentRoute = reservationService.frequentTravelRoute();
+
+			BusRoute busRoute = new BusRoute();
+			busRoute.setPathNo(frequentRoute);
+			BusRouteDto busRouteDto = new BusRouteDto();
+			busRouteDto.setLogin(reservationDto.getLogin());
+			busRouteDto.setBusRoute(busRoute);
+			ResponseEntity<BusRoute> busRouteEntity = proxy.getBus(busRouteDto);
+			BusRoute busRoute2 = busRouteEntity.getBody();
+			if(busRoute2!=null) {
+				return new ResponseEntity<BusDetails>(busRoute2.getNewBusDetails(),HttpStatus.OK);
+			}else {
+				return new ResponseEntity("No Reservation done till yet...!!",HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@GetMapping("/get/particularDayReservation")
+	public ResponseEntity<List<Reservation>> getparticularDayReservation(@RequestBody ParticularDateReservationDto particularDateDto  ){
+		try {
+			Login login = particularDateDto.getLogin();
+			ResponseEntity<Registration> user = proxy.getRegisteredUser(login);
+			Registration registration = user.getBody();
+			if(registration==null) {
+				return new ResponseEntity("User is not registered",HttpStatus.UNAUTHORIZED);
+			}
+			if(!registration.getRole().equalsIgnoreCase("ADMIN")) {
+				return new ResponseEntity("User is not authorized",HttpStatus.UNAUTHORIZED);
+			}
+			List<Reservation> reservations = reservationService.particularDayReservationList(particularDateDto.getDate().getDate());
+			return new ResponseEntity<List<Reservation>>(reservations,HttpStatus.OK);
+		}catch (Exception e) {
+			return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 //	@GetMapping("/get/weeklyBooked")
 //	public ResponseEntity<List<Reservation>> weeklyBooked(@RequestBody ProfitByMonth bookedByMonth) {
 //		try {

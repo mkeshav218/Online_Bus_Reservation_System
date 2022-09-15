@@ -71,57 +71,30 @@ public class ReservationRepoImpl implements ReservationRepo {
 	}
 
 	@Override
-	public List<Integer> lastMonthProfit(LocalDate date1, LocalDate date2) {
+	public HashMap<Integer, Integer> transactionBetweenDate(LocalDate date1, LocalDate date2) {
 		String hql= "SELECT r.pathNo from Reservation r where r.bookingDate between :dt1 AND :dt2";
 		Query query=entityManager.createQuery(hql);
 		query.setParameter("dt1", date1);
 		query.setParameter("dt2", date2);
 		List<Integer> paths= query.getResultList();
-		return paths;
-	}
-
-	@Override
-	public int mostPreferredBus() {
-		String hql= "SELECT r.pathNo from Reservation r";
-		Query query=entityManager.createQuery(hql);
-		List<Integer> paths= query.getResultList();
 		HashMap<Integer,Integer> frequent = new HashMap<Integer,Integer>();
-		for(int i:paths) {
-			if(frequent.containsKey(i)) {
-				int k = frequent.get(i);
+		for(int path:paths) {
+			if(frequent.containsKey(path)) {
+				int k = frequent.get(path);
 				k++;
-				frequent.put(i, k);
+				frequent.put(path, k);
 			}else {
-				frequent.put(i, 1);
+				frequent.put(path, 1);
 			}
 		}
-		Set<Integer> keySet = frequent.keySet();
-		int maxCount=0;
-		int mostFrequentBus=0;
-		for(int i:keySet) {
-			if(frequent.get(i)>maxCount) {
-				maxCount=frequent.get(i);
-				mostFrequentBus=i;
-			}
-		}
-		return mostFrequentBus;
+		return frequent;
 	}
 
 	@Override
-	public List<Reservation> dailyBooked(LocalDate date) {
+	public List<Reservation> particularDayReservationList(LocalDate date) {
 		String hql="from Reservation where bookingDate=: dt";
 		Query query=entityManager.createQuery(hql);
 		query.setParameter("dt", date);
-		List<Reservation> res= query.getResultList();
-		return res;
-	}
-
-	@Override
-	public List<Reservation> weeklyBooked(LocalDate date1, LocalDate date2) {
-		String hql="from Reservation r where r.bookingDate between :dt1 AND :dt2";
-		Query query=entityManager.createQuery(hql);
-		query.setParameter("dt1", date1);
-		query.setParameter("dt2", date2);
 		List<Reservation> res= query.getResultList();
 		return res;
 	}
@@ -131,11 +104,5 @@ public class ReservationRepoImpl implements ReservationRepo {
 		
 		return null;
 	}
-	
-	@Override
-	public Reservation searchTicket(int ticketNo) {
-		return getReservation(ticketNo);
-	}
-
 
 }

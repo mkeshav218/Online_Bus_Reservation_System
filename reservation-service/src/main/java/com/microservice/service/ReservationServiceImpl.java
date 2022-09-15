@@ -1,6 +1,7 @@
 package com.microservice.service;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,38 +62,20 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 
 	@Override
-	public List<Integer> lastMonthProfit(LocalDate date1,LocalDate date2){
+	public HashMap<Integer, Integer> transactionBetweenDate(LocalDate date1,LocalDate date2){
 		try {
-			return repo.lastMonthProfit(date1, date2);
+			return repo.transactionBetweenDate(date1, date2);
 		}catch (Exception e) {
 			throw new BusServiceException("No Reservation done till yet...so no profit....!!");
 		}
 	}
 
 	@Override
-	public int mostPreferredBus() {
+	public List<Reservation> particularDayReservationList(LocalDate date) {
 		try {
-			return repo.mostPreferredBus(); 
-		} catch (Exception e) {
-			throw new BusServiceException("No Reservation done till yet!!");
-		}
-	}
-
-	@Override
-	public List<Reservation> dailyBooked(LocalDate date) {
-		try {
-			return repo.dailyBooked(date);
+			return repo.particularDayReservationList(date);
 		}catch (Exception e) {
 			throw new BusServiceException("No Reservation done on "+date);
-		}
-	}
-
-	@Override
-	public List<Reservation> weeklyBooked(LocalDate date1, LocalDate date2) {
-		try {
-			return repo.weeklyBooked(date1, date2);
-		}catch (Exception e) {
-			throw new BusServiceException("No Reservation done between "+date1 +" and " + date2);
 		}
 	}
 
@@ -101,16 +84,6 @@ public class ReservationServiceImpl implements ReservationService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public Reservation searchTicket(int ticketNo) {
-		try {
-			return repo.searchTicket(ticketNo);
-		}catch (Exception e) {
-			throw new BusServiceException("No Ticket Found");
-		}
-	}
-
 
 
 }
